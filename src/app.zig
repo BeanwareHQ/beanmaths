@@ -7,7 +7,31 @@ pub const App = struct {
         return App{};
     }
 
-    pub fn deinit() void {}
+    pub fn deinit(self: *const App) void {
+        _ = self;
+    }
 
-    pub fn run() void {}
+    fn refresh(self: *const App) void {
+        _ = self;
+    }
+
+    fn render(self: *const App) void {
+        rl.ClearBackground(rl.RAYWHITE);
+        rl.DrawText("FooBar", 20, 20, 20, rl.BLUE);
+        _ = self;
+    }
+
+    pub fn run(self: *const App) void {
+        rl.InitWindow(800, 600, "arstoylnafduyokawft");
+        rl.SetTargetFPS(60);
+
+        defer rl.CloseWindow();
+
+        while (!rl.WindowShouldClose()) {
+            self.refresh();
+            rl.BeginDrawing();
+            self.render();
+            rl.EndDrawing();
+        }
+    }
 };
