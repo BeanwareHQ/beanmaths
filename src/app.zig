@@ -2,27 +2,48 @@ const std = @import("std");
 const rl = @import("raylib");
 const rgui = @import("raygui");
 
-const Button = struct {
-    bounds: rl.Rectangle,
-    updateFunc: ?*const fn (type) void,
-    updateFuncParams: type,
+pub fn Button(comptime P: type) type {
+    const UpdateFuncType = ?*const fn (?P) void;
+    return struct {
+        text: [*:0]const u8,
+        bounds: rl.Rectangle,
+        updateFunc: UpdateFuncType,
 
-    pub fn init(boundsRect: rl.Rectangle, text: []const u8) Button {
-        Button{ .bounds = boundsRect, .text = text };
-    }
+        pub fn init(boundsRect: rl.Rectangle, text: [*:0]const u8, updateFunc: UpdateFuncType) Button(P) {
+            return Button(P){
+                .bounds = boundsRect,
+                .text = text,
+                .updateFunc = updateFunc,
+            };
+        }
 
-    pub fn refresh(self: *const Button) void {
-        if (rgui.GuiButton(self.bounds, self.text) != 0) {
-            if (self.updateFunc != null) {
-                self.updateFunc.?(self.updateFuncParams.?);
+        pub fn render(self: *const Button(P), param: ?P) void {
+            if (rgui.GuiButton(self.bounds, self.text) != 0) {
+                if (self.updateFunc != null) {
+                    self.updateFunc.?(param);
+                }
             }
         }
-    }
-};
+    };
+}
+
+fn initRectangle(x: f32, y: f32, w: f32, h: f32) rl.Rectangle {
+    return rl.Rectangle{ .x = x, .y = y, .width = w, .height = h };
+}
 
 pub const App = struct {
+    button: Button(void),
+
+    fn buttonUpdate(a: ?void) void {
+        _ = a;
+        std.io.getStdOut().writer().print("weewooo\n", .{}) catch {
+            return;
+        };
+    }
+
     pub fn init() App {
-        return App{};
+        var button = Button(void).init(initRectangle(20, 20, 200, 120), "wee", buttonUpdate);
+        return App{ .button = button };
     }
 
     pub fn deinit(self: *const App) void {
@@ -36,7 +57,7 @@ pub const App = struct {
     fn render(self: *const App) void {
         rl.ClearBackground(rl.RAYWHITE);
         rl.DrawText("FooBar", 20, 20, 20, rl.BLUE);
-        _ = self;
+        self.button.render(null);
     }
 
     pub fn run(self: *const App) void {
