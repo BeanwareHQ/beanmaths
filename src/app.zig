@@ -2,6 +2,24 @@ const std = @import("std");
 const rl = @import("raylib");
 const rgui = @import("raygui");
 
+const Button = struct {
+    bounds: rl.Rectangle,
+    updateFunc: ?*const fn (type) void,
+    updateFuncParams: type,
+
+    pub fn init(boundsRect: rl.Rectangle, text: []const u8) Button {
+        Button{ .bounds = boundsRect, .text = text };
+    }
+
+    pub fn refresh(self: *const Button) void {
+        if (rgui.GuiButton(self.bounds, self.text) != 0) {
+            if (self.updateFunc != null) {
+                self.updateFunc.?(self.updateFuncParams.?);
+            }
+        }
+    }
+};
+
 pub const App = struct {
     pub fn init() App {
         return App{};
