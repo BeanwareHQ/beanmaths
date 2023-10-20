@@ -17,7 +17,7 @@ pub const Server = struct {
     lobbies: std.AutoHashMap(u8, std.ArrayList(serverTypes.Client)),
     threads: std.ArrayList(Thread),
 
-    pub fn init(alloc: Allocator, address: net.Address) !Server {
+    pub fn init(alloc: Allocator, address: net.Address) !@This() {
         const lobbies = std.AutoHashMap(u8, std.ArrayList(serverTypes.Client)).init(alloc);
         const threads = std.ArrayList(Thread).init(alloc);
         var server = net.StreamServer.init(.{ .reuse_address = true });
@@ -34,7 +34,7 @@ pub const Server = struct {
         };
     }
 
-    pub fn deinit(self: *Server) void {
+    pub fn deinit(self: *@This()) void {
         std.log.info("shutting down...", .{});
         var lb_iterator = self.lobbies.valueIterator();
 
@@ -52,7 +52,7 @@ pub const Server = struct {
         self.server.deinit();
     }
 
-    pub fn run(self: *Server) !void {
+    pub fn run(self: *@This()) !void {
         while (true) {
             const conn = try self.server.accept();
             const thread = try Thread.spawn(.{}, Server.threadFunc, .{ self, conn });
@@ -72,7 +72,7 @@ pub const Server = struct {
         }
     }
 
-    fn acceptConnection(self: *Server, conn: net.StreamServer.Connection) !void {
+    fn acceptConnection(self: *@This(), conn: net.StreamServer.Connection) !void {
         var buf: [1000]u8 = undefined;
         var data: []const u8 = undefined;
         var dataSize: usize = undefined;
@@ -131,7 +131,7 @@ pub const Server = struct {
         conn.stream.close();
     }
 
-    fn threadFunc(self: *Server, conn: net.StreamServer.Connection) void {
+    fn threadFunc(self: *@This(), conn: net.StreamServer.Connection) void {
         self.acceptConnection(conn) catch {
             @panic("thread panicked!");
         };

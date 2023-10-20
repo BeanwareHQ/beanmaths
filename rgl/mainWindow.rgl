@@ -1,7 +1,7 @@
 #
 # rgl layout text file (v4.0) - raygui layout file generated using rGuiLayout
 #
-# Number of controls:     5
+# Number of controls:     6
 #
 # Ref. window:    r <x> <y> <width> <height>
 # Anchor info:    a <id> <name> <posx> <posy> <enabled>
@@ -11,6 +11,7 @@ r 0 40 -1 -1
 a 001 anchor01 0 0 1
 c 000 0 beanMathsWindowBox 0 0 1360 768 1 BeanMaths
 c 001 23 beanMathsLogo 296 72 776 264 1 BeanMaths
-c 002 5 playButton 528 608 312 48 1 Play
-c 003 5 settingsButton 528 664 152 40 1 Settings
-c 004 5 aboutButton 688 664 152 40 1 About
+c 002 5 playButton 520 608 328 48 1 Play
+c 003 5 settingsButton 520 664 80 40 1 About
+c 004 5 aboutButton 608 664 152 40 1 Settings
+c 005 5 Button005 768 664 80 40 1 Exit
