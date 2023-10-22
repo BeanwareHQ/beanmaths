@@ -2,6 +2,8 @@ const std = @import("std");
 const rl = @import("raylib");
 const rgui = @import("raygui");
 const types = @import("../../types.zig");
+const super = @import("../module.zig");
+
 const IconText = @import("../../util.zig").IconText;
 const Icons = rgui.GuiIconName;
 
@@ -14,8 +16,8 @@ const rects = .{
 };
 
 const Props = struct {
-    screenWidth: i32,
-    screenHeight: i32,
+    screenWidth: f32,
+    screenHeight: f32,
 };
 
 const ButtonStates = struct {
@@ -40,9 +42,10 @@ pub const TitleScreen = struct {
     screenTo: types.GameScreen,
 
     buttonStates: ButtonStates,
+    background: super.Background,
 
     pub fn init(props: Props) @This() {
-        return @This(){ .componentProps = props, .shouldDeinit = false, .screenTo = types.GameScreen.exit, .buttonStates = ButtonStates.init() };
+        return @This(){ .componentProps = props, .shouldDeinit = false, .screenTo = types.GameScreen.exit, .buttonStates = ButtonStates.init(), .background = super.Background.init(.{ .screenWidth = props.screenWidth, .screenHeight = props.screenHeight }) };
     }
 
     pub fn deinit(self: *@This()) void {
@@ -51,6 +54,8 @@ pub const TitleScreen = struct {
 
     pub fn render(self: *@This()) void {
         rl.ClearBackground(rl.RAYWHITE);
+        // background
+        self.background.render();
 
         // Other stuff
         _ = rgui.GuiDummyRec(rects.dummyRec, "BeanMaths Logo");
@@ -62,8 +67,8 @@ pub const TitleScreen = struct {
         self.buttonStates.exitButton = (rgui.GuiButton(rects.exitButton, IconText(Icons.ICON_EXIT, "Quit")) != 0);
     }
 
-    pub fn refresh(self: *@This(), updateProps: anytype) void {
-        _ = updateProps;
+    pub fn refresh(self: *@This(), updateParams: anytype) void {
+        self.background.refresh(.{ .globTimer = updateParams.globTimer });
 
         if (self.buttonStates.playButton)
             std.debug.print("play button pressed", .{});

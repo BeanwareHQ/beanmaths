@@ -1,3 +1,5 @@
 pub const screens = struct {
-    pub const title_screen = @import("screens/title.zig");
+    pub const TitleScreen = @import("screens/title.zig").TitleScreen;
 };
+
+pub const Background = @import("bg.zig").Background;

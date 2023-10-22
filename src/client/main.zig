@@ -22,10 +22,10 @@ pub fn main() void {
     // initialize styles early
     initStyles();
 
-    const titleScreen = @import("components/module.zig").screens.title_screen;
+    const components = @import("components/module.zig");
 
     var globTimer: u32 = 0;
-    var screen = titleScreen.TitleScreen.init(.{
+    var screen = components.screens.TitleScreen.init(.{
         .screenWidth = screenWidth,
         .screenHeight = screenHeight,
     });
