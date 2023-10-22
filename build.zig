@@ -1,6 +1,4 @@
 const std = @import("std");
-const rl_build = @import("./raylib/build.zig");
-const rgui_build = @import("./raygui/build.zig");
 
 // Although this function looks imperative, note that its job is to
 // declaratively construct a build graph that will be executed by an external
@@ -17,21 +15,9 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const clientExe = b.addExecutable(.{
-        .name = "beanmaths",
-        // In this case the main source file is merely a path, however, in more
-        // complicated build scripts, this could be a generated file.
-        .root_source_file = .{ .path = "src/client/main.zig" },
-        .target = target,
-        .optimize = optimize,
-    });
-
-    rl_build.addTo(b, clientExe, target, optimize);
-    rgui_build.addTo(b, clientExe, target, optimize);
-
-    const serverExe = b.addExecutable(.{
+    const executable = b.addExecutable(.{
         .name = "beanserver",
-        .root_source_file = .{ .path = "src/server/main.zig" },
+        .root_source_file = .{ .path = "src/main.zig" },
         .target = target,
         .optimize = optimize,
     });
@@ -39,8 +25,8 @@ pub fn build(b: *std.Build) void {
     // This declares intent for the executable to be installed into the
     // standard location when the user invokes the "install" step (the default
     // step when running `zig build`).
-    b.installArtifact(clientExe);
-    b.installArtifact(serverExe);
+    b.installArtifact(executable);
+    b.installArtifact(executable);
 
     // Unit tests: incorporate later.
     // const unit_tests = b.addTest(.{
