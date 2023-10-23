@@ -4,3 +4,4 @@ server/zig-*
 client/.gradle
 client/build
 **/*eclipse*
+.vscode
