@@ -3,3 +3,7 @@
 
 # Ignore Gradle build output directory
 build
+
+# get rid of eclipse JDTLS stuff
+.classpath
+.project
