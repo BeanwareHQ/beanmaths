@@ -7,3 +7,5 @@ build
 # get rid of eclipse JDTLS stuff
 .classpath
 .project
+
+app/bin

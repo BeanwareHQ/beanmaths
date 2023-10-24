@@ -9,7 +9,6 @@ public class App {
     static int windowWidth = 1360;
     static int windowHeight = 768;
     static int globTimer = 0;
-    static Background background = new Background(windowWidth, windowHeight); 
 
     static void initStyles() {
         Jaylib.GuiSetStyle(DEFAULT, TEXT_SIZE, 15);
@@ -17,12 +16,10 @@ public class App {
 
     static void refresh() {
         globTimer++;
-        background.refresh(globTimer);
     }
 
     static void render() {
         Jaylib.ClearBackground(RAYWHITE);
-        background.render();
     }
 
     public static void main(String[] args) {

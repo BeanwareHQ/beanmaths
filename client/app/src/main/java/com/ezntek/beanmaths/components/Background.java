@@ -4,7 +4,6 @@ import com.raylib.Jaylib;
 import static com.raylib.Jaylib.*;
 
 import com.ezntek.beanmaths.util.Colors;
-import com.ezntek.beanmaths.components.Component;
 
 public class Background extends Component {
     Jaylib.Rectangle rect;
