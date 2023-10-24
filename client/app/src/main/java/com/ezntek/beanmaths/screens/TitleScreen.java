@@ -1,4 +1,4 @@
-package com.screens;
+package com.ezntek.beanmaths.screens;
 
 import com.raylib.Raylib;
 import static com.raylib.Jaylib.*;
