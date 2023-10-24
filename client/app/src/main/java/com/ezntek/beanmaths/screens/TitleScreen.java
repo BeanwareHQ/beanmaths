@@ -1,9 +1,13 @@
 package com.ezntek.beanmaths.screens;
 
-import com.raylib.Raylib;
-import static com.raylib.Jaylib.*;
+import com.raylib.Jaylib;
+import com.raylib.Jaylib.Rectangle;
+import static com.raylib.Jaylib.GuiIconText;
 
-import com.ezntek.beanmaths.components.Component;
+import java.util.LinkedList;
+
+import com.ezntek.beanmaths.components.ComponentState;
+
 import static com.ezntek.beanmaths.components.ComponentState.*;
 
 class ButtonStates {
@@ -13,34 +17,49 @@ class ButtonStates {
     boolean aboutButton = false;
 }
 
-public class TitleScreen extends Component {
-    
-    // rectangles
-    private static Rectangle dummyRec = new Rectangle(296, 72, 776, 264);
-    private static Rectangle playButton = new Rectangle(520, 608, 328, 48);
-    private static Rectangle settingsButton = new Rectangle(520, 664, 80, 40);
-    private static Rectangle exitButton = new Rectangle(608, 664, 152, 40);
-    private static Rectangle aboutButton = new Rectangle(768, 664, 80, 40); 
+class GuiElements {
+    static Rectangle dummyRec = new Rectangle(296, 72, 776, 264);
+    static Rectangle playButton = new Rectangle(480, 608, 408, 48);
+    static Rectangle settingsButton = new Rectangle(480, 664, 120, 40);
+    static Rectangle exitButton = new Rectangle(768, 664, 120, 40);
+    static Rectangle aboutButton = new Rectangle(608, 664, 152, 40);
+}
 
-    // button states
+public class TitleScreen extends Screen {
+    public LinkedList<Screen> screens;
+
+    public ComponentState state = ENABLED;
     private ButtonStates buttonStates = new ButtonStates();
+    int windowWidth, windowHeight;
 
-    public void render() {
-        // disallow rendering when in mode HIDDEN or DISABLED
-        if (this.state != ENABLED) return;          
-        
-        Raylib.GuiDummyRec(dummyRec, "BeanMaths logo");
-
-        // Buttons
-        this.buttonStates.aboutButton = Raylib.GuiButton(aboutButton, Raylib.GuiIconText(Raylib.ICON_INFO, "About"));
-        this.buttonStates.playButton = Raylib.GuiButton(playButton, Raylib.GuiIconText(Raylib.ICON_PLAYER_PLAY, "Play"));
-        this.buttonStates.settingsButton = Raylib.GuiButton(settingsButton, Raylib.GuiIconText(Raylib.ICON_GEAR, "Settings"));
-        this.buttonStates.exitButton = Raylib.GuiButton(exitButton, Raylib.GuiIconText(Raylib.ICON_EXIT, "Quit"));
+    public TitleScreen(LinkedList<Screen> screens, int windowWidth, int windowHeight) {
+        this.screens = screens;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
     }
 
-    public void refresh(int gtState) {
-        // allow everything but DISABLE
-        if (this.state == DISABLED) return;
+    public void render() {
+        // disallow rendering when in mode HIDDEN or DISABLEd
+        if (this.state != ENABLED)
+            return;
+
+        Jaylib.GuiDummyRec(GuiElements.dummyRec, "BeanMaths logo");
+
+        // Buttons
+        this.buttonStates.aboutButton = Jaylib.GuiButton(GuiElements.aboutButton,
+                GuiIconText(Jaylib.ICON_INFO, "About"));
+        this.buttonStates.playButton = Jaylib.GuiButton(GuiElements.playButton,
+                GuiIconText(Jaylib.ICON_PLAYER_PLAY, "Play"));
+        this.buttonStates.settingsButton = Jaylib.GuiButton(GuiElements.settingsButton,
+                GuiIconText(Jaylib.ICON_GEAR, "Settings"));
+        this.buttonStates.exitButton = Jaylib.GuiButton(GuiElements.exitButton,
+                GuiIconText(Jaylib.ICON_EXIT, "Quit"));
+    }
+
+    public void refresh(long gtState) {
+        // allow everything but DISABLEd
+        if (this.state == DISABLED)
+            return;
 
         if (this.buttonStates.playButton)
             System.out.println("play button pressed");
@@ -49,6 +68,6 @@ public class TitleScreen extends Component {
         if (this.buttonStates.settingsButton)
             System.out.println("settings button pressed");
         if (this.buttonStates.exitButton)
-            System.out.println("exit button pressed");
+            this.screens.removeLast();
     }
 }

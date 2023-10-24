@@ -1,38 +1,80 @@
 package com.ezntek.beanmaths;
 
-import com.raylib.Jaylib;
 import static com.raylib.Jaylib.*;
 
-import com.ezntek.beanmaths.components.*;
+import java.util.LinkedList;
+
+import com.ezntek.beanmaths.components.Background;
+import com.ezntek.beanmaths.screens.*;
 
 public class App {
     static int windowWidth = 1360;
     static int windowHeight = 768;
-    static int globTimer = 0;
+    static long globTimer = 0;
+    static boolean shouldDeinit;
+    static LinkedList<Screen> navScreens = new LinkedList<Screen>();
+    // static Color bgColor = new Jaylib.Color(0x33, 0x33, 0x30, 0xff);
 
-    static void initStyles() {
-        Jaylib.GuiSetStyle(DEFAULT, TEXT_SIZE, 15);
+    static TitleScreen titleScreen = new TitleScreen(navScreens, windowWidth, windowHeight);
+    static Background background = new Background(windowWidth, windowHeight);
+
+    static void init() {
+        InitWindow(windowWidth, windowHeight, "BeanMaths (java version)");
+        SetTargetFPS(60);
+        GuiSetStyle(DEFAULT, TEXT_SIZE, 15);
+
+        navScreens.addLast(titleScreen);
+        shouldDeinit = WindowShouldClose();
+    }
+
+    static void deinit() {
+        CloseWindow();
     }
 
     static void refresh() {
         globTimer++;
+
+        if (navScreens.isEmpty()) {
+            shouldDeinit = true;
+            return;
+        }
+
+        background.refresh(globTimer);
+        navScreens.peekLast().refresh(globTimer);
     }
 
     static void render() {
-        Jaylib.ClearBackground(RAYWHITE);
+        ClearBackground(RAYWHITE);
+        background.render();
+
+        try {
+            navScreens.peekLast().render();
+        } catch (NullPointerException exc) {
+            // handles the case where there are no
+            // screens in the LL, and when the case
+            // in refresh() does not catch this.
+            shouldDeinit = true;
+            return;
+        }
     }
 
     public static void main(String[] args) {
-        Jaylib.InitWindow(windowWidth, windowHeight, "BeanMaths (java version)");
-        Jaylib.SetTargetFPS(60);
-
-        initStyles();
-
-        while (!Jaylib.WindowShouldClose()) {
+        init();
+        while (!shouldDeinit) {
             refresh();
-            Jaylib.BeginDrawing();
+            // exit before rendering happens.
+            // prevents a null pointer exception to the
+            // current screen in the render function.
+            if (shouldDeinit) {
+                deinit();
+                return;
+            }
+
+            BeginDrawing();
             render();
-            Jaylib.EndDrawing();
+            EndDrawing();
+            shouldDeinit = WindowShouldClose();
         }
+        deinit();
     }
 }
