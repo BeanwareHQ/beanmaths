@@ -7,7 +7,7 @@
 # Anchor info:    a <id> <name> <posx> <posy> <enabled>
 # Control info:   c <id> <type> <name> <rectangle> <anchor_id> <text>
 #
-r 0 40 -1 -1
+r 0 0 -1 -1
 a 001 anchor01 0 0 1
 c 000 0 beanMathsWindowBox 0 0 1360 768 1 BeanMaths
 c 001 23 beanMathsLogo 296 72 776 264 1 BeanMaths

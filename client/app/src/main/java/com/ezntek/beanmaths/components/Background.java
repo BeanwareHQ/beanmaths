@@ -4,10 +4,9 @@ import com.raylib.Jaylib;
 import static com.raylib.Jaylib.*;
 
 import com.ezntek.beanmaths.util.Colors;
+import static com.ezntek.beanmaths.components.ComponentState.*;
 
 public class Background extends Component {
-    public ComponentState state = ComponentState.DISABLED;
-
     Jaylib.Rectangle rect;
     Jaylib.Rectangle overlayRect;
     Color overlayColor = Colors.RAYWHITE;
@@ -21,11 +20,12 @@ public class Background extends Component {
         this.rect = new Jaylib.Rectangle(0, 0, screenWidth, screenHeight);
         this.overlayRect = new Jaylib.Rectangle(0, 0, screenWidth, screenHeight);
         this.overlayColor = new Jaylib.Color(245, 245, 245, 255);
+        this.state = DISABLED;
     }
 
     @Override
     public void render() {
-        if (this.state != ComponentState.ENABLED)
+        if (!super.shouldRender())
             return;
 
         Jaylib.DrawRectangleRec(this.rect, rectColor);
@@ -33,8 +33,8 @@ public class Background extends Component {
     }
 
     @Override
-    public void refresh(long gtState) {
-        if (this.state == ComponentState.DISABLED)
+    public void update(long gtState) {
+        if (!super.shouldUpdate())
             return;
 
         int animationProgress = (int) ((gtState + totalFrames) % totalFrames);

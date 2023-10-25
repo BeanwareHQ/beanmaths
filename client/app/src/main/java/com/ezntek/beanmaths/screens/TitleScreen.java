@@ -7,6 +7,8 @@ import static com.raylib.Jaylib.GuiIconText;
 import java.util.LinkedList;
 
 import com.ezntek.beanmaths.components.ComponentState;
+import com.ezntek.beanmaths.dialogs.PlayDialog;
+import com.ezntek.beanmaths.navigation.NavigationController;
 
 import static com.ezntek.beanmaths.components.ComponentState.*;
 
@@ -30,18 +32,17 @@ public class TitleScreen extends Screen {
 
     public ComponentState state = ENABLED;
     private ButtonStates buttonStates = new ButtonStates();
-    int windowWidth, windowHeight;
+    int screenWidth, screenHeight;
 
-    public TitleScreen(LinkedList<Screen> screens, int windowWidth, int windowHeight) {
-        this.screens = screens;
-        this.windowWidth = windowWidth;
-        this.windowHeight = windowHeight;
+    public TitleScreen(NavigationController nc, int screenWidth, int screenHeight) {
+        super(nc, screenWidth, screenHeight);
     }
 
+    @Override
     public void render() {
-        // disallow rendering when in mode HIDDEN or DISABLEd
-        if (this.state != ENABLED)
+        if (!super.shouldRender())
             return;
+        ;
 
         Jaylib.GuiDummyRec(GuiElements.dummyRec, "BeanMaths logo");
 
@@ -56,13 +57,16 @@ public class TitleScreen extends Screen {
                 GuiIconText(Jaylib.ICON_EXIT, "Quit"));
     }
 
-    public void refresh(long gtState) {
-        // allow everything but DISABLEd
-        if (this.state == DISABLED)
+    @Override
+    public void update(long gtState) {
+        if (!super.shouldUpdate())
             return;
 
-        if (this.buttonStates.playButton)
-            System.out.println("play button pressed");
+        if (this.buttonStates.playButton) {
+            this.nc.add(new PlayDialog(this.nc, this.screenWidth, this.screenHeight));
+            return;
+        }
+
         if (this.buttonStates.aboutButton)
             System.out.println("about button pressed");
         if (this.buttonStates.settingsButton)

@@ -2,6 +2,7 @@ package com.ezntek.beanmaths.components;
 
 public enum ComponentState {
     ENABLED,
-    HIDDEN,
+    NODRAW,
+    NOUPDATE,
     DISABLED,
 }

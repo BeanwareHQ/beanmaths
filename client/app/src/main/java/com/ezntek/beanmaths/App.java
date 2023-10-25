@@ -2,28 +2,31 @@ package com.ezntek.beanmaths;
 
 import static com.raylib.Jaylib.*;
 
+import java.util.ConcurrentModificationException;
 import java.util.LinkedList;
 
 import com.ezntek.beanmaths.components.Background;
+import com.ezntek.beanmaths.components.Component;
+import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.screens.*;
 
 public class App {
-    static int windowWidth = 1360;
+    static int windowWidth = 1362;
     static int windowHeight = 768;
     static long globTimer = 0;
     static boolean shouldDeinit;
-    static LinkedList<Screen> navScreens = new LinkedList<Screen>();
+    static NavigationController nc = new NavigationController();
     // static Color bgColor = new Jaylib.Color(0x33, 0x33, 0x30, 0xff);
 
-    static TitleScreen titleScreen = new TitleScreen(navScreens, windowWidth, windowHeight);
+    static TitleScreen titleScreen = new TitleScreen(nc, windowWidth, windowHeight);
     static Background background = new Background(windowWidth, windowHeight);
 
     static void init() {
         InitWindow(windowWidth, windowHeight, "BeanMaths (java version)");
         SetTargetFPS(60);
-        GuiSetStyle(DEFAULT, TEXT_SIZE, 15);
+        GuiSetStyle(DEFAULT, TEXT_SIZE, 10);
 
-        navScreens.addLast(titleScreen);
+        nc.add(titleScreen);
         shouldDeinit = WindowShouldClose();
     }
 
@@ -34,13 +37,22 @@ public class App {
     static void refresh() {
         globTimer++;
 
-        if (navScreens.isEmpty()) {
+        if (nc.isEmpty()) {
             shouldDeinit = true;
             return;
         }
 
-        background.refresh(globTimer);
-        navScreens.peekLast().refresh(globTimer);
+        background.update(globTimer);
+        try {
+            nc.getComponents().forEach((cmp) -> {
+                cmp.update(globTimer);
+            });
+        } catch (ConcurrentModificationException exc) {
+            return;
+        }
+
+        // if (globTimer % 45 == 0)
+        // System.out.println(nc.getComponents());
     }
 
     static void render() {
@@ -48,12 +60,10 @@ public class App {
         background.render();
 
         try {
-            navScreens.peekLast().render();
-        } catch (NullPointerException exc) {
-            // handles the case where there are no
-            // screens in the LL, and when the case
-            // in refresh() does not catch this.
-            shouldDeinit = true;
+            nc.getComponents().forEach((cmp) -> {
+                cmp.render();
+            });
+        } catch (ConcurrentModificationException exc) {
             return;
         }
     }
