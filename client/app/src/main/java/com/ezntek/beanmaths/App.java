@@ -37,22 +37,21 @@ public class App {
     static void refresh() {
         globTimer++;
 
-        if (nc.isEmpty()) {
-            shouldDeinit = true;
-            return;
-        }
-
         background.update(globTimer);
         try {
-            nc.getComponents().forEach((cmp) -> {
+            // avoid a `ConcurrentModificationException` by cloning the data first
+            LinkedList<Component> components = (LinkedList<Component>) nc.getComponents().clone();
+            components.forEach((cmp) -> {
                 cmp.update(globTimer);
             });
         } catch (ConcurrentModificationException exc) {
             return;
         }
 
-        // if (globTimer % 45 == 0)
-        // System.out.println(nc.getComponents());
+        if (nc.isEmpty()) {
+            shouldDeinit = true;
+            return;
+        }
     }
 
     static void render() {
@@ -60,7 +59,8 @@ public class App {
         background.render();
 
         try {
-            nc.getComponents().forEach((cmp) -> {
+            LinkedList<Component> components = (LinkedList<Component>) nc.getComponents().clone();
+            components.forEach((cmp) -> {
                 cmp.render();
             });
         } catch (ConcurrentModificationException exc) {

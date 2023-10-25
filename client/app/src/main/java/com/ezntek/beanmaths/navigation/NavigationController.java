@@ -64,7 +64,11 @@ public class NavigationController {
     }
 
     public Screen pop() {
-        return (Screen) this.ll.pop();
+        this.ll.getLast().state = ComponentState.DISABLED;
+        Screen res = (Screen) this.ll.removeLast(); // Could be a `Dialog`
+
+        this.ll.getLast().state = ComponentState.ENABLED;
+        return res;
     }
 
     public LinkedList<Component> getComponents() {

@@ -2,7 +2,6 @@ package com.ezntek.beanmaths.dialogs;
 
 import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.screens.Screen;
-import com.ezntek.beanmaths.util.Colors;
 
 import com.raylib.Jaylib.Color;
 import com.raylib.Jaylib.Rectangle;
@@ -18,7 +17,7 @@ public abstract class Dialog extends Screen {
         super(nc, screenWidth, screenHeight);
         this.darken = true;
         this.darkeningRect = new Rectangle(0, 0, screenWidth, screenHeight);
-        this.darkeningColor = new Jaylib.Color(80, 80, 80, 100);
+        this.darkeningColor = new Jaylib.Color(80, 80, 80, 80);
     }
 
     @Override

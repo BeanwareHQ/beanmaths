@@ -5,6 +5,7 @@ import com.raylib.Jaylib.Rectangle;
 import static com.raylib.Jaylib.GuiIconText;
 
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 import com.ezntek.beanmaths.components.ComponentState;
 import com.ezntek.beanmaths.dialogs.PlayDialog;
@@ -28,21 +29,22 @@ class GuiElements {
 }
 
 public class TitleScreen extends Screen {
-    public LinkedList<Screen> screens;
-
     public ComponentState state = ENABLED;
     private ButtonStates buttonStates = new ButtonStates();
     int screenWidth, screenHeight;
 
     public TitleScreen(NavigationController nc, int screenWidth, int screenHeight) {
         super(nc, screenWidth, screenHeight);
+
+        // for dialogs
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
     }
 
     @Override
     public void render() {
         if (!super.shouldRender())
             return;
-        ;
 
         Jaylib.GuiDummyRec(GuiElements.dummyRec, "BeanMaths logo");
 
@@ -71,7 +73,16 @@ public class TitleScreen extends Screen {
             System.out.println("about button pressed");
         if (this.buttonStates.settingsButton)
             System.out.println("settings button pressed");
-        if (this.buttonStates.exitButton)
-            this.screens.removeLast();
+        if (this.buttonStates.exitButton) {
+            try {
+                this.nc.pop();
+            } catch (NoSuchElementException exc) {
+                // absence of elements will be detected
+                // on the same cycle after the root screen
+                // gets removed, so propagating and recatching
+                // is unnecessary.
+                return;
+            }
+        }
     }
 }

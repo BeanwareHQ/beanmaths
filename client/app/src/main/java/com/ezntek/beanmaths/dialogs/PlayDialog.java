@@ -51,10 +51,8 @@ public class PlayDialog extends Dialog {
     // keep the dialog disabled
     public ComponentState state = ComponentState.DISABLED;
     private DialogState dialogState = new DialogState();
-    private int windowWidth, windowHeight;
 
     static String playSingleplayerText = "Singleplayer doesn't require any additional details. You can just play!";
-    static Color darkenRectColor = Colors.withOpacity(Colors.DARKGRAY, 40);
 
     public PlayDialog(NavigationController nc, int windowWidth, int windowHeight) {
         super(nc, windowWidth, windowHeight);
@@ -65,9 +63,6 @@ public class PlayDialog extends Dialog {
         if (!super.shouldRender())
             return;
         super.render();
-
-        // darken the screen
-        DrawRectangleRec(new Rectangle(0, 0, windowWidth, windowHeight), darkenRectColor);
 
         if (!this.dialogState.playScreenWindowBoxActive)
             return;
@@ -105,5 +100,11 @@ public class PlayDialog extends Dialog {
     public void update(long gtState) {
         if (!super.shouldUpdate())
             return;
+
+        if (!this.dialogState.playScreenWindowBoxActive) {
+            nc.pop();
+            this.dialogState.playScreenWindowBoxActive = true; // set it to true for the next use
+            return;
+        }
     }
 }
