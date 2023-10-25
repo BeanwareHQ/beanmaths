@@ -6,8 +6,8 @@ import com.ezntek.beanmaths.navigation.NavigationController;
 public class GameScreen extends Screen {
     public ComponentState state = ComponentState.DISABLED;
 
-    public GameScreen(NavigationController nc, int screenWidth, int screenHeight) {
-        super(nc, screenWidth, screenHeight);
+    public GameScreen(NavigationController nc, int windowWidth, int windowHeight) {
+        super(nc, windowWidth, windowHeight);
     }
 
     @Override

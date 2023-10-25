@@ -8,12 +8,12 @@ import static com.ezntek.beanmaths.components.ComponentState.*;
 
 public abstract class Screen extends Component {
     protected NavigationController nc;
-    protected int screenWidth;
-    protected int screenHeight;
+    protected int windowWidth;
+    protected int windowHeight;
 
-    public Screen(NavigationController nc, int screenWidth, int screenHeight) {
+    public Screen(NavigationController nc, int windowWidth, int windowHeight) {
         this.nc = nc;
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
     }
 }

@@ -16,9 +16,9 @@ public class Background extends Component {
     static int totalFrames = 60 * 12; // FPS * seconds for one cycle
     static float opacityDelta = totalFrames / 255;
 
-    public Background(int screenWidth, int screenHeight) {
-        this.rect = new Jaylib.Rectangle(0, 0, screenWidth, screenHeight);
-        this.overlayRect = new Jaylib.Rectangle(0, 0, screenWidth, screenHeight);
+    public Background(int windowWidth, int windowHeight) {
+        this.rect = new Jaylib.Rectangle(0, 0, windowWidth, windowHeight);
+        this.overlayRect = new Jaylib.Rectangle(0, 0, windowWidth, windowHeight);
         this.overlayColor = new Jaylib.Color(245, 245, 245, 255);
         this.state = DISABLED;
     }

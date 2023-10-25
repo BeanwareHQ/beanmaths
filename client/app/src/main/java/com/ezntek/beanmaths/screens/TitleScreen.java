@@ -1,14 +1,13 @@
 package com.ezntek.beanmaths.screens;
 
+import java.util.NoSuchElementException;
+
 import com.raylib.Jaylib;
 import com.raylib.Jaylib.Rectangle;
 import static com.raylib.Jaylib.GuiIconText;
 
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-
 import com.ezntek.beanmaths.components.ComponentState;
-import com.ezntek.beanmaths.dialogs.PlayDialog;
+import com.ezntek.beanmaths.dialogs.*;
 import com.ezntek.beanmaths.navigation.NavigationController;
 
 import static com.ezntek.beanmaths.components.ComponentState.*;
@@ -31,14 +30,14 @@ class GuiElements {
 public class TitleScreen extends Screen {
     public ComponentState state = ENABLED;
     private ButtonStates buttonStates = new ButtonStates();
-    int screenWidth, screenHeight;
+    int windowWidth, windowHeight;
 
-    public TitleScreen(NavigationController nc, int screenWidth, int screenHeight) {
-        super(nc, screenWidth, screenHeight);
+    public TitleScreen(NavigationController nc, int windowWidth, int windowHeight) {
+        super(nc, windowWidth, windowHeight);
 
         // for dialogs
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
+        this.windowWidth = windowWidth;
+        this.windowHeight = windowHeight;
     }
 
     @Override
@@ -65,14 +64,21 @@ public class TitleScreen extends Screen {
             return;
 
         if (this.buttonStates.playButton) {
-            this.nc.add(new PlayDialog(this.nc, this.screenWidth, this.screenHeight));
+            Dialog dialog = new PlayDialog(this.nc, this.windowWidth, this.windowHeight);
+            this.nc.add(dialog);
+
             return;
         }
 
-        if (this.buttonStates.aboutButton)
-            System.out.println("about button pressed");
+        if (this.buttonStates.aboutButton) {
+            Dialog dialog = new AboutDialog(this.nc, this.windowWidth, this.windowHeight);
+            this.nc.add(dialog);
+
+            return;
+        }
+
         if (this.buttonStates.settingsButton)
-            System.out.println("settings button pressed");
+            System.out.println("not implemented");
         if (this.buttonStates.exitButton) {
             try {
                 this.nc.pop();

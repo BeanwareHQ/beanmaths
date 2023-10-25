@@ -4,19 +4,17 @@ import static com.raylib.Jaylib.*;
 
 import org.bytedeco.javacpp.BytePointer;
 import com.raylib.Jaylib.Rectangle;
-import com.raylib.Raylib;
 import com.ezntek.beanmaths.components.ComponentState;
 import com.ezntek.beanmaths.navigation.NavigationController;
-import com.ezntek.beanmaths.util.Colors;
 
-class Rects {
+class PlayDlgRects {
     // Boxes
     static Rectangle playScreenWindowBox = new Rectangle(288, 96, 752, 576); // WindowBox: playScreenWindowBox
     static Rectangle multiplayerGroupBox = new Rectangle(304, 136, 720, 440); // GroupBox: multiplayerGroupBox
     static Rectangle singleplayerGroupBox = new Rectangle(304, 592, 720, 64); // GroupBox: singleplayerGroupBox
 
     // Text Boxes
-    static Raylib.Rectangle nickBox = new Rectangle(632, 272, 224, 32); // TextBox: nickBox
+    static Rectangle nickBox = new Rectangle(632, 272, 224, 32); // TextBox: nickBox
     static Rectangle serverBox = new Rectangle(632, 312, 224, 32); // TextBox: serverBox
     static Rectangle lobbyBox = new Rectangle(632, 352, 224, 32); // TextBox: lobbyBox
 
@@ -32,7 +30,7 @@ class Rects {
     static Rectangle playMultiplayerButton = new Rectangle(872, 528, 136, 32); // Button: playMultiplayerButton
 }
 
-class DialogState {
+class PlayDlgState {
     boolean playScreenWindowBoxActive = true;
     boolean testConnButton = false;
     boolean playMultiplayerButton = false;
@@ -50,7 +48,7 @@ class DialogState {
 public class PlayDialog extends Dialog {
     // keep the dialog disabled
     public ComponentState state = ComponentState.DISABLED;
-    private DialogState dialogState = new DialogState();
+    private PlayDlgState dlgState = new PlayDlgState();
 
     static String playSingleplayerText = "Singleplayer doesn't require any additional details. You can just play!";
 
@@ -64,36 +62,36 @@ public class PlayDialog extends Dialog {
             return;
         super.render();
 
-        if (!this.dialogState.playScreenWindowBoxActive)
+        if (!this.dlgState.playScreenWindowBoxActive)
             return;
 
-        this.dialogState.playScreenWindowBoxActive = !GuiWindowBox(Rects.playScreenWindowBox, "Play");
+        this.dlgState.playScreenWindowBoxActive = !GuiWindowBox(PlayDlgRects.playScreenWindowBox, "Play");
 
         // boxes
-        GuiGroupBox(Rects.multiplayerGroupBox, "Play Multiplayer");
-        GuiGroupBox(Rects.singleplayerGroupBox, "Play Singleplayer");
+        GuiGroupBox(PlayDlgRects.multiplayerGroupBox, "Play Multiplayer");
+        GuiGroupBox(PlayDlgRects.singleplayerGroupBox, "Play Singleplayer");
 
         // buttons
-        dialogState.testConnButton = GuiButton(Rects.testConnButton, "Test Connection");
-        dialogState.playMultiplayerButton = GuiButton(Rects.playMultiplayerButton, "Join Multiplayer");
-        dialogState.playSingleplayerButton = GuiButton(Rects.playSingleplayerButton, "Join Singleplayer");
+        dlgState.testConnButton = GuiButton(PlayDlgRects.testConnButton, "Test Connection");
+        dlgState.playMultiplayerButton = GuiButton(PlayDlgRects.playMultiplayerButton, "Join Multiplayer");
+        dlgState.playSingleplayerButton = GuiButton(PlayDlgRects.playSingleplayerButton, "Join Singleplayer");
 
         // text boxes
-        if (GuiTextBox(Rects.nickBox, this.dialogState.nickBoxBuf, 128,
-                this.dialogState.nickBoxEditMode))
-            this.dialogState.nickBoxEditMode = !this.dialogState.nickBoxEditMode;
+        if (GuiTextBox(PlayDlgRects.nickBox, this.dlgState.nickBoxBuf, 128,
+                this.dlgState.nickBoxEditMode))
+            this.dlgState.nickBoxEditMode = !this.dlgState.nickBoxEditMode;
 
-        if (GuiTextBox(Rects.serverBox, this.dialogState.serverBoxBuf, 128, this.dialogState.serverBoxEditMode))
-            this.dialogState.serverBoxEditMode = !this.dialogState.serverBoxEditMode;
+        if (GuiTextBox(PlayDlgRects.serverBox, this.dlgState.serverBoxBuf, 128, this.dlgState.serverBoxEditMode))
+            this.dlgState.serverBoxEditMode = !this.dlgState.serverBoxEditMode;
 
-        if (GuiTextBox(Rects.lobbyBox, this.dialogState.lobbyBoxBuf, 128, this.dialogState.lobbyBoxEditMode))
-            this.dialogState.lobbyBoxEditMode = !this.dialogState.lobbyBoxEditMode;
+        if (GuiTextBox(PlayDlgRects.lobbyBox, this.dlgState.lobbyBoxBuf, 128, this.dlgState.lobbyBoxEditMode))
+            this.dlgState.lobbyBoxEditMode = !this.dlgState.lobbyBoxEditMode;
 
         // labels
-        GuiLabel(Rects.nickLabel, "Nick");
-        GuiLabel(Rects.serverLabel, "Server");
-        GuiLabel(Rects.lobbyLabel, "Lobby");
-        GuiLabel(Rects.playSingleplayerLabel, playSingleplayerText);
+        GuiLabel(PlayDlgRects.nickLabel, "Nick");
+        GuiLabel(PlayDlgRects.serverLabel, "Server");
+        GuiLabel(PlayDlgRects.lobbyLabel, "Lobby");
+        GuiLabel(PlayDlgRects.playSingleplayerLabel, playSingleplayerText);
     }
 
     @Override
@@ -101,9 +99,9 @@ public class PlayDialog extends Dialog {
         if (!super.shouldUpdate())
             return;
 
-        if (!this.dialogState.playScreenWindowBoxActive) {
+        if (!this.dlgState.playScreenWindowBoxActive) {
             nc.pop();
-            this.dialogState.playScreenWindowBoxActive = true; // set it to true for the next use
+            this.dlgState.playScreenWindowBoxActive = true; // set it to true for the next use
             return;
         }
     }
