@@ -3,7 +3,7 @@ package com.ezntek.beanmaths.components;
 import static com.ezntek.beanmaths.components.ComponentState.*;
 
 public abstract class Component {
-    public ComponentState state;
+    public ComponentState cmpState;
 
     public static Component makeComponent() {
         class DummyComponent extends Component {
@@ -22,10 +22,10 @@ public abstract class Component {
     public abstract void update(long gtState);
 
     public boolean shouldRender() {
-        return !(this.state == DISABLED || this.state == NODRAW);
+        return !(this.cmpState == DISABLED || this.cmpState == NODRAW);
     }
 
     public boolean shouldUpdate() {
-        return !(this.state == DISABLED || this.state == NOUPDATE);
+        return !(this.cmpState == DISABLED || this.cmpState == NOUPDATE);
     }
 }

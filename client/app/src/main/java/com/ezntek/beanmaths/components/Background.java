@@ -20,7 +20,7 @@ public class Background extends Component {
         this.rect = new Jaylib.Rectangle(0, 0, windowWidth, windowHeight);
         this.overlayRect = new Jaylib.Rectangle(0, 0, windowWidth, windowHeight);
         this.overlayColor = new Jaylib.Color(245, 245, 245, 255);
-        this.state = DISABLED;
+        this.cmpState = DISABLED;
     }
 
     @Override

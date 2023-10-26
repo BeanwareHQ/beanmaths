@@ -4,7 +4,7 @@ import com.ezntek.beanmaths.components.ComponentState;
 import com.ezntek.beanmaths.navigation.NavigationController;
 
 public class GameScreen extends Screen {
-    public ComponentState state = ComponentState.DISABLED;
+    public ComponentState cmpState = ComponentState.DISABLED;
 
     public GameScreen(NavigationController nc, int windowWidth, int windowHeight) {
         super(nc, windowWidth, windowHeight);

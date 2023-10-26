@@ -21,14 +21,14 @@ public class NavigationController {
 
     public <S extends Screen> void add(S screen) {
         try {
-            this.ll.getLast().state = ComponentState.DISABLED;
+            this.ll.getLast().cmpState = ComponentState.DISABLED;
         } catch (Exception exc) {
             if (!this.ll.isEmpty() && !(exc instanceof NullPointerException)) {
                 throw exc;
             }
         }
 
-        screen.state = ComponentState.ENABLED;
+        screen.cmpState = ComponentState.ENABLED;
         this.ll.addLast(screen);
     }
 
@@ -46,16 +46,16 @@ public class NavigationController {
         if (prev instanceof Dialog) {
             dialog.darken = false;
             // Fully disable the prevous dialog.
-            prev.state = ComponentState.DISABLED;
+            prev.cmpState = ComponentState.DISABLED;
         } else {
             // if the top element is a dialog, allow the background
             // to be displayed, but not updated.
             //
             // Makes usage a bit more natural.
-            prev.state = ComponentState.NOUPDATE;
+            prev.cmpState = ComponentState.NOUPDATE;
         }
 
-        dialog.state = ComponentState.ENABLED;
+        dialog.cmpState = ComponentState.ENABLED;
         this.ll.addLast(dialog);
     }
 
@@ -64,10 +64,10 @@ public class NavigationController {
     }
 
     public Screen pop() {
-        this.ll.getLast().state = ComponentState.DISABLED;
+        this.ll.getLast().cmpState = ComponentState.DISABLED;
         Screen res = (Screen) this.ll.removeLast(); // Could be a `Dialog`
 
-        this.ll.getLast().state = ComponentState.ENABLED;
+        this.ll.getLast().cmpState = ComponentState.ENABLED;
         return res;
     }
 

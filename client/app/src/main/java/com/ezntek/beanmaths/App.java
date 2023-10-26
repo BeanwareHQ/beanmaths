@@ -24,6 +24,7 @@ public class App {
     static void init() {
         InitWindow(windowWidth, windowHeight, "BeanMaths (java version)");
         SetTargetFPS(60);
+        SetExitKey(KEY_NULL);
         GuiSetStyle(DEFAULT, TEXT_SIZE, 10);
 
         nc.add(titleScreen);

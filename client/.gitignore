@@ -9,3 +9,6 @@ build
 .project
 
 app/bin
+
+# crash logs from C interop memory allocation errors
+*.log

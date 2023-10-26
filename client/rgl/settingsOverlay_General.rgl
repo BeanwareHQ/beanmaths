@@ -1,0 +1,20 @@
+#
+# rgl layout text file (v4.0) - raygui layout file generated using rGuiLayout
+#
+# Number of controls:     9
+#
+# Ref. window:    r <x> <y> <width> <height>
+# Anchor info:    a <id> <name> <posx> <posy> <enabled>
+# Control info:   c <id> <type> <name> <rectangle> <anchor_id> <text>
+#
+r 0 40 -1 -1
+a 001 anchor01 0 0 1
+c 000 0 settingsWindowBox 288 96 752 576 1 Settings
+c 001 21 SettingsList 304 136 112 520 0 General;Apperance
+c 002 23 headingDummy 432 136 584 72 1 General (Placeholder for heading)
+c 003 4 defaultNickLabel 432 240 136 32 1 Default Nickname
+c 004 12 defaultNickBox 576 240 440 32 1 
+c 005 4 defaultServerLabel 432 280 136 32 1 Default Server
+c 006 12 defaultServerBox 576 280 440 32 1 
+c 007 5 closeButton 896 632 120 24 1 Close
+c 008 5 applyButton 768 632 120 24 1 Apply
