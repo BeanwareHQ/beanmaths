@@ -46,6 +46,9 @@ public class App {
                 cmp.update(globTimer);
             });
         } catch (ConcurrentModificationException exc) {
+            // race conditions are negligible.
+            // New screens _can_ be rendered 1 frame after
+            // it is added in the nagivation controller
             return;
         }
 

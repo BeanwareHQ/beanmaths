@@ -26,6 +26,8 @@ public class GameScreen extends Screen {
     public void render() {
         if (!super.shouldRender())
             return;
+
+        this.game.render();
     }
 
     @Override
@@ -37,5 +39,7 @@ public class GameScreen extends Screen {
             nc.pop();
             return;
         }
+
+        this.game.update(gtState);
     }
 }

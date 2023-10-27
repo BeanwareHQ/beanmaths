@@ -13,6 +13,7 @@ val isAppleSilicon =
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    
 }
 
 repositories {
@@ -26,6 +27,10 @@ repositories {
 }
 
 dependencies {
+    // Tests
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
     // Jaylib
     if (isAppleSilicon) {
         // use the custom jar files for Apple Silicon
@@ -38,13 +43,27 @@ dependencies {
     } else {
         implementation("uk.co.electronstudio.jaylib:jaylib:4.2.+")
     }
+    
 
     // JSON
     implementation("com.google.code.gson:gson:2.10.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
-java { toolchain { languageVersion.set(JavaLanguageVersion.of(17)) } }
+java {
+    toolchain { 
+        val toolchainVersion = if (isAppleSilicon) {
+            // fix for apple silicon.
+            // gradle from homebrew is bundled with Java 21 only. A more generic
+            // fix could be added later.
+            21
+        } else {
+            17
+        };
+
+        languageVersion.set(JavaLanguageVersion.of(toolchainVersion)) 
+    }
+}
 
 application {
     // Define the main class for the application.
@@ -57,3 +76,12 @@ application {
 }
 
 distributions { main { contents { into("resources") { from("resources") } } } }
+
+tasks.named<Test>("test") {
+    useJUnit()
+    useJUnitPlatform()
+
+    testLogging {
+        events("passed")
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "basic": {
+        "enable": true,
+        "imperfectDigits": true,
+        "max": 60
+    },
+    "timesTable": {
+        "enable": true,
+        "max": 10
+    },
+    "advanced": {
+        "enable": true,
+        "roots": true,
+        "maxBase": 10,
+        "maxPower": 3
+    },
+    "count": 5
+}

@@ -12,7 +12,30 @@ public class Question extends Component {
         ROOT,
     }
 
+    Operation op;
+    int first;
+    int second;
+
     public Question() {
+
+    }
+
+    public Question(int first, int second) {
+
+    }
+
+    public Question(Operation op) {
+
+    }
+
+    public Question(int first, int second, Operation op) {
+        this.op = op;
+        this.first = first;
+        this.second = second;
+    }
+
+    public int solve() {
+        return -1; // TODO: write
     }
 
     @Override
@@ -26,4 +49,8 @@ public class Question extends Component {
         if (!super.shouldUpdate())
             return;
     }
+
+    // ----- Generation Functions -----
+
+    // ----- End Generation Functions -----
 }

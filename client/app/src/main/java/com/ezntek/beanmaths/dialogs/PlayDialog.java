@@ -6,6 +6,9 @@ import org.bytedeco.javacpp.BytePointer;
 import com.raylib.Jaylib.Rectangle;
 import com.ezntek.beanmaths.components.ComponentState;
 import com.ezntek.beanmaths.navigation.NavigationController;
+import com.ezntek.beanmaths.screens.GameScreen;
+import com.ezntek.beanmaths.screens.Screen;
+import com.ezntek.beanmaths.screens.GameScreen.GameMode;
 
 public class PlayDialog extends Dialog {
     // avoid namespace clashing issues
@@ -125,5 +128,23 @@ public class PlayDialog extends Dialog {
 
         if (nickBoxBufString.length() > 63)
             this.state.nickBoxBuf.putString(nickBoxBufString.substring(0, 63));
+
+        if (this.state.playMultiplayerButton) {
+            Screen gameScreen = new GameScreen(this.nc, this.windowWidth, this.windowHeight, GameMode.MULTIPLAYER);
+            this.nc.pop();
+            this.state.playScreenWindowBoxActive = true; // set it to true for the next use
+
+            this.nc.add(gameScreen);
+            return;
+        }
+
+        if (this.state.playSingleplayerButton) {
+            Screen gameScreen = new GameScreen(this.nc, this.windowWidth, this.windowHeight, GameMode.SINGLEPLAYER);
+            this.nc.pop();
+            this.state.playScreenWindowBoxActive = true; // set it to true for the next use
+
+            this.nc.add(gameScreen);
+            return;
+        }
     }
 }
