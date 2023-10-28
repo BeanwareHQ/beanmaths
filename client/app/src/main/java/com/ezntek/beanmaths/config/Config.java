@@ -2,25 +2,25 @@ package com.ezntek.beanmaths.config;
 
 public class Config {
     public class Basic {
-        boolean enable;
-        boolean imperfectDigits;
-        int max;
+        public boolean enable;
+        public boolean imperfectDigits;
+        public int max;
     }
 
     public class TimesTable {
-        boolean enable;
-        int max;
+        public boolean enable;
+        public int max;
     }
 
     public class Advanced {
-        boolean enable;
-        boolean roots;
-        int maxBase;
-        int maxPower;
+        public boolean enable;
+        public boolean roots;
+        public int maxBase;
+        public int maxPower;
     }
 
-    Basic basic;
-    TimesTable timesTable;
-    Advanced advanced;
-    int count;
+    public Basic basic;
+    public TimesTable timesTable;
+    public Advanced advanced;
+    public int count;
 }
