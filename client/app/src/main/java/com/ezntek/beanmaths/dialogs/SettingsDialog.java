@@ -1,19 +1,18 @@
 package com.ezntek.beanmaths.dialogs;
 
+import java.nio.IntBuffer;
+import org.bytedeco.javacpp.BytePointer;
 import com.raylib.Jaylib.Rectangle;
 import static com.raylib.Jaylib.*;
-
-import java.nio.IntBuffer;
-
-import org.bytedeco.javacpp.BytePointer;
 
 import com.ezntek.beanmaths.components.Component;
 import com.ezntek.beanmaths.components.ComponentState;
 import com.ezntek.beanmaths.navigation.NavigationController;
+import com.ezntek.beanmaths.util.RequiresDeinit;
 
-public class SettingsDialog extends Dialog {
+public class SettingsDialog extends Dialog implements RequiresDeinit {
     // ----- Public Nested Classes -----
-    public class GeneralPane extends Component {
+    public class GeneralPane extends Component implements RequiresDeinit {
         public ComponentState cmpState = ComponentState.DISABLED;
 
         private class Rects {
@@ -33,16 +32,23 @@ public class SettingsDialog extends Dialog {
             boolean nickBoxEditMode = false;
             boolean serverBoxEditMode = false;
 
-            BytePointer nickBoxBuf = new BytePointer("");
-            BytePointer serverBoxBuf = new BytePointer("");
+            BytePointer nickBoxBuf;
+            BytePointer serverBoxBuf;
 
             State() {
-                this.nickBoxBuf.capacity(64);
-                this.serverBoxBuf.capacity(64);
+                this.nickBoxBuf = new BytePointer("");
+                this.serverBoxBuf = new BytePointer("");
             }
         }
 
         public State state = new State();
+
+        public GeneralPane() {
+            super();
+
+            this.state.serverBoxBuf.capacity(64);
+            this.state.nickBoxBuf.capacity(64);
+        }
 
         @Override
         public void render() {
@@ -73,6 +79,17 @@ public class SettingsDialog extends Dialog {
 
             if (serverBoxBufString.length() > 63)
                 this.state.serverBoxBuf.putString(serverBoxBufString.substring(0, 63));
+        }
+
+        @Override
+        public void deinit() {
+            this.state.nickBoxBuf.deallocate();
+            this.state.serverBoxBuf.deallocate();
+        }
+
+        @Override
+        public void reinit() {
+            this.state = new State();
         }
     }
 
@@ -109,7 +126,6 @@ public class SettingsDialog extends Dialog {
         public void update(long gtState) {
             if (!super.shouldUpdate())
                 return;
-
         }
     }
     // ----- End Public nested classes -----
@@ -139,16 +155,22 @@ public class SettingsDialog extends Dialog {
         boolean applyButton = false;
 
         boolean settingsWindowBoxActive = true;
-        IntBuffer scrollIndex = IntBuffer.allocate(8); // could be lower
+        IntBuffer scrollIndex;
         int scrollActive = 0;
 
         PaneType activePane = PaneType.GENERAL;
+
+        State() {
+            this.scrollIndex = IntBuffer.allocate(8);
+            this.scrollActive = 0;
+        }
     }
 
     Panes panes;
     State state = new State();
     int windowWidth, windowHeight;
     boolean darken = true;
+    final String[] paneTable = { "General", "Appearance" };
 
     public SettingsDialog(NavigationController nc, int windowWidth, int windowHeight) {
         super(nc, windowWidth, windowHeight);
@@ -174,6 +196,8 @@ public class SettingsDialog extends Dialog {
 
         this.state.closeButton = GuiButton(Rects.closeButton, "Close");
         this.state.applyButton = GuiButton(Rects.applyButton, "Apply");
+
+        System.out.println(this.state.scrollActive);
 
         switch (this.state.activePane) {
             case GENERAL:
@@ -207,6 +231,9 @@ public class SettingsDialog extends Dialog {
                 break;
         }
 
+        // screen switching
+
+        // button event handling
         if (this.state.closeButton) {
             this.nc.pop();
             return;
@@ -214,5 +241,15 @@ public class SettingsDialog extends Dialog {
 
         if (this.state.applyButton)
             System.out.println("Apply button pressed");
+    }
+
+    @Override
+    public void deinit() {
+        this.panes.general.deinit();
+    }
+
+    @Override
+    public void reinit() {
+        this.panes.general.reinit();
     }
 }

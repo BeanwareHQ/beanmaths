@@ -9,8 +9,9 @@ import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.screens.GameScreen;
 import com.ezntek.beanmaths.screens.Screen;
 import com.ezntek.beanmaths.screens.GameScreen.GameMode;
+import com.ezntek.beanmaths.util.RequiresDeinit;
 
-public class PlayDialog extends Dialog {
+public class PlayDialog extends Dialog implements RequiresDeinit {
     // avoid namespace clashing issues
     private class Rects {
         // Boxes
@@ -46,13 +47,29 @@ public class PlayDialog extends Dialog {
         boolean lobbyBoxEditMode = false;
 
         // TODO: load these values from the settings loader
-        BytePointer nickBoxBuf = new BytePointer("Joe Jimmy John");
-        BytePointer serverBoxBuf = new BytePointer("10.0.3.273:2257");
-        BytePointer lobbyBoxBuf = new BytePointer("12");
+        BytePointer nickBoxBuf;
+        BytePointer serverBoxBuf;
+        BytePointer lobbyBoxBuf;
+
+        boolean shouldClearNickBoxDefault;
+        boolean shouldClearServerBoxDefault;
+        boolean shouldClearLobbyBoxDefault;
+
+        State() {
+            this.shouldClearNickBoxDefault = true;
+            this.shouldClearServerBoxDefault = true;
+            this.shouldClearLobbyBoxDefault = true;
+
+            this.nickBoxBuf = new BytePointer("Joe Jimmy John");
+            this.serverBoxBuf = new BytePointer("10.0.3.273:2257");
+            this.lobbyBoxBuf = new BytePointer("12");
+        }
     }
 
     // keep the dialog disabled
     public ComponentState cmpState = ComponentState.DISABLED;
+
+    private boolean shouldClearDefaultText;
     private State state = new State();
 
     static String playSingleplayerText = "Singleplayer doesn't require any additional details. You can just play!";
@@ -129,6 +146,23 @@ public class PlayDialog extends Dialog {
         if (nickBoxBufString.length() > 63)
             this.state.nickBoxBuf.putString(nickBoxBufString.substring(0, 63));
 
+        // lobby box text clearing
+        if (this.state.shouldClearLobbyBoxDefault && this.state.lobbyBoxEditMode) {
+            this.state.lobbyBoxBuf.putString("");
+            this.state.shouldClearLobbyBoxDefault = false;
+        }
+
+        if (this.state.shouldClearServerBoxDefault && this.state.serverBoxEditMode) {
+            this.state.serverBoxBuf.putString("");
+            this.state.shouldClearServerBoxDefault = false;
+        }
+
+        if (this.state.shouldClearNickBoxDefault && this.state.nickBoxEditMode) {
+            this.state.nickBoxBuf.putString("");
+            this.state.shouldClearNickBoxDefault = false;
+        }
+
+        // button events
         if (this.state.playMultiplayerButton) {
             Screen gameScreen = new GameScreen(this.nc, this.windowWidth, this.windowHeight, GameMode.MULTIPLAYER);
             this.nc.pop();
@@ -146,5 +180,18 @@ public class PlayDialog extends Dialog {
             this.nc.add(gameScreen);
             return;
         }
+    }
+
+    @Override
+    public void deinit() {
+        // free the byte pointers
+        this.state.nickBoxBuf.deallocate();
+        this.state.serverBoxBuf.deallocate();
+        this.state.lobbyBoxBuf.deallocate();
+    }
+
+    @Override
+    public void reinit() {
+        this.state = new State();
     }
 }

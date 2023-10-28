@@ -6,16 +6,17 @@ import com.ezntek.beanmaths.components.Component;
 import com.ezntek.beanmaths.components.ComponentState;
 import com.ezntek.beanmaths.dialogs.Dialog;
 import com.ezntek.beanmaths.screens.Screen;
+import com.ezntek.beanmaths.util.RequiresDeinit;
 
 public class NavigationController {
-    private LinkedList<Component> ll;
+    private LinkedList<Screen> ll;
 
     public NavigationController() {
-        this.ll = new LinkedList<Component>();
+        this.ll = new LinkedList<Screen>();
     }
 
     public <S extends Screen> NavigationController(S screen, int sWidth, int sHeight) {
-        this.ll = new LinkedList<Component>();
+        this.ll = new LinkedList<Screen>();
         this.ll.addLast(screen);
     }
 
@@ -29,6 +30,9 @@ public class NavigationController {
         }
 
         screen.cmpState = ComponentState.ENABLED;
+        if (screen instanceof RequiresDeinit)
+            ((RequiresDeinit) screen).reinit();
+
         this.ll.addLast(screen);
     }
 
@@ -56,6 +60,9 @@ public class NavigationController {
         }
 
         dialog.cmpState = ComponentState.ENABLED;
+        if (dialog instanceof RequiresDeinit)
+            ((RequiresDeinit) dialog).reinit();
+
         this.ll.addLast(dialog);
     }
 
@@ -66,12 +73,14 @@ public class NavigationController {
     public Screen pop() {
         this.ll.getLast().cmpState = ComponentState.DISABLED;
         Screen res = (Screen) this.ll.removeLast(); // Could be a `Dialog`
+        if (res instanceof RequiresDeinit)
+            ((RequiresDeinit) res).deinit();
 
         this.ll.getLast().cmpState = ComponentState.ENABLED;
         return res;
     }
 
-    public LinkedList<Component> getComponents() {
+    public LinkedList<Screen> getComponents() {
         return this.ll;
     }
 
