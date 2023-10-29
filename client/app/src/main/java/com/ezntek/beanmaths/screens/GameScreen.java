@@ -3,6 +3,7 @@ package com.ezntek.beanmaths.screens;
 import static com.raylib.Jaylib.*;
 
 import com.ezntek.beanmaths.components.ComponentState;
+import com.ezntek.beanmaths.config.Config;
 import com.ezntek.beanmaths.game.Game;
 import com.ezntek.beanmaths.navigation.NavigationController;
 
@@ -15,8 +16,8 @@ public class GameScreen extends Screen {
     public ComponentState cmpState = ComponentState.DISABLED;
     private Game game;
 
-    public GameScreen(NavigationController nc, int windowWidth, int windowHeight, GameMode gameMode) {
-        super(nc, windowWidth, windowHeight);
+    public GameScreen(Config cfg, NavigationController nc, int windowWidth, int windowHeight, GameMode gameMode) {
+        super(cfg, nc, windowWidth, windowHeight);
 
         this.game = new Game(gameMode);
         // TODO: implement multiplayer (😭)

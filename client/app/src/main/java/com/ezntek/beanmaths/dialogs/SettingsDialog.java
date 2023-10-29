@@ -1,143 +1,26 @@
 package com.ezntek.beanmaths.dialogs;
 
 import java.nio.IntBuffer;
-import org.bytedeco.javacpp.BytePointer;
+
 import com.raylib.Jaylib.Rectangle;
 import static com.raylib.Jaylib.*;
 
-import com.ezntek.beanmaths.components.Component;
-import com.ezntek.beanmaths.components.ComponentState;
+import com.ezntek.beanmaths.config.Config;
 import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.util.RequiresDeinit;
+import com.ezntek.beanmaths.components.settings.*;
 
 public class SettingsDialog extends Dialog implements RequiresDeinit {
-    // ----- Public Nested Classes -----
-    public class GeneralPane extends Component implements RequiresDeinit {
-        public ComponentState cmpState = ComponentState.DISABLED;
-
-        private class Rects {
-            // Labels
-            static Rectangle defaultNickLabel = new Rectangle(432, 240, 136, 32); // Label: defaultNickLabel
-            static Rectangle defaultServerLabel = new Rectangle(432, 280, 136, 32); // Label: defaultServerLabel
-
-            // text boxes
-            static Rectangle defaultNickBox = new Rectangle(576, 240, 440, 32); // TextBox: defaultNickBox
-            static Rectangle defaultServerBox = new Rectangle(576, 280, 440, 32); // TextBox: defaultServerBox
-
-            // other
-            static Rectangle headingDummyRect = new Rectangle(432, 136, 584, 72); // DummyRec: headingDummy
-        }
-
-        private class State {
-            boolean nickBoxEditMode = false;
-            boolean serverBoxEditMode = false;
-
-            BytePointer nickBoxBuf;
-            BytePointer serverBoxBuf;
-
-            State() {
-                this.nickBoxBuf = new BytePointer("");
-                this.serverBoxBuf = new BytePointer("");
-            }
-        }
-
-        public State state = new State();
-
-        public GeneralPane() {
-            super();
-
-            this.state.serverBoxBuf.capacity(64);
-            this.state.nickBoxBuf.capacity(64);
-        }
-
-        @Override
-        public void render() {
-            if (!super.shouldRender())
-                return;
-
-            GuiDummyRec(Rects.headingDummyRect, "General (placeholder)");
-            GuiLabel(Rects.defaultNickLabel, "Default Nick");
-            GuiLabel(Rects.defaultServerLabel, "Default Server");
-
-            if (GuiTextBox(Rects.defaultNickBox, this.state.nickBoxBuf, 128, this.state.nickBoxEditMode))
-                this.state.nickBoxEditMode = !this.state.nickBoxEditMode;
-            if (GuiTextBox(Rects.defaultServerBox, this.state.serverBoxBuf, 128, this.state.serverBoxEditMode))
-                this.state.serverBoxEditMode = !this.state.serverBoxEditMode;
-        }
-
-        @Override
-        public void update(long gtState) {
-            if (!super.shouldUpdate())
-                return;
-
-            // truncate strings to avoid a buffer overflow
-            String nickBoxBufString = this.state.nickBoxBuf.getString();
-            String serverBoxBufString = this.state.serverBoxBuf.getString();
-
-            if (nickBoxBufString.length() > 63)
-                this.state.nickBoxBuf.putString(nickBoxBufString.substring(0, 63));
-
-            if (serverBoxBufString.length() > 63)
-                this.state.serverBoxBuf.putString(serverBoxBufString.substring(0, 63));
-        }
-
-        @Override
-        public void deinit() {
-            this.state.nickBoxBuf.deallocate();
-            this.state.serverBoxBuf.deallocate();
-        }
-
-        @Override
-        public void reinit() {
-            this.state = new State();
-        }
-    }
-
-    public class AppearancePane extends Component {
-        private class Rects {
-            static Rectangle themeLabel = new Rectangle(432, 224, 120, 32); // Label: themeLabel
-            static Rectangle themeDropdown = new Rectangle(840, 224, 176, 32); // DropdownBox: themeDropdown
-        }
-
-        private class State {
-            boolean themeDropdownEditMode = false;
-            IntBuffer themeDropdownActive = IntBuffer.allocate(16); // 16 total themes allowed
-        }
-
-        ComponentState cmpState = ComponentState.DISABLED;
-        State state = new State();
-
-        public void render() {
-            if (!super.shouldRender())
-                return;
-
-            if (this.state.themeDropdownEditMode)
-                GuiLock();
-
-            GuiLabel(Rects.themeDropdown, "Theme");
-
-            if (GuiDropdownBox(Rects.themeDropdown, "Light;Dark", this.state.themeDropdownActive,
-                    this.state.themeDropdownEditMode))
-                this.state.themeDropdownEditMode = !this.state.themeDropdownEditMode;
-
-            GuiUnlock();
-        }
-
-        public void update(long gtState) {
-            if (!super.shouldUpdate())
-                return;
-        }
-    }
-    // ----- End Public nested classes -----
-
     private enum PaneType {
         GENERAL,
         APPEARANCE,
+        MATH,
     }
 
     private class Panes {
         GeneralPane general;
         AppearancePane appearance;
+        MathPane math;
     }
 
     private class Rects {
@@ -156,30 +39,31 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
 
         boolean settingsWindowBoxActive = true;
         IntBuffer scrollIndex;
-        int scrollActive = 0;
+        int indexActive;
 
         PaneType activePane = PaneType.GENERAL;
 
         State() {
             this.scrollIndex = IntBuffer.allocate(8);
-            this.scrollActive = 0;
         }
     }
 
     Panes panes;
     State state = new State();
     int windowWidth, windowHeight;
+    int active;
     boolean darken = true;
-    final String[] paneTable = { "General", "Appearance" };
 
-    public SettingsDialog(NavigationController nc, int windowWidth, int windowHeight) {
-        super(nc, windowWidth, windowHeight);
+    public SettingsDialog(Config cfg, NavigationController nc, int windowWidth, int windowHeight) {
+        super(cfg, nc, windowWidth, windowHeight);
 
+        this.cfg = cfg;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
         this.panes = new Panes();
-        this.panes.general = this.new GeneralPane();
-        this.panes.appearance = this.new AppearancePane();
+        this.panes.general = new GeneralPane(this.cfg);
+        this.panes.appearance = new AppearancePane(this.cfg);
+        this.panes.math = new MathPane(this.cfg);
     }
 
     @Override
@@ -192,12 +76,11 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
             return;
 
         this.state.settingsWindowBoxActive = !GuiWindowBox(Rects.settingsWindowBox, "Settings");
-        GuiListView(Rects.settingsList, "General;Appearance", this.state.scrollIndex, this.state.scrollActive);
+        this.state.indexActive = GuiListView(Rects.settingsList, "General;Appearance;Math", this.state.scrollIndex,
+                this.state.indexActive);
 
         this.state.closeButton = GuiButton(Rects.closeButton, "Close");
         this.state.applyButton = GuiButton(Rects.applyButton, "Apply");
-
-        System.out.println(this.state.scrollActive);
 
         switch (this.state.activePane) {
             case GENERAL:
@@ -206,6 +89,10 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
 
             case APPEARANCE:
                 this.panes.appearance.render();
+                break;
+
+            case MATH:
+                this.panes.math.render();
                 break;
         }
     }
@@ -229,9 +116,26 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
             case APPEARANCE:
                 this.panes.appearance.update(gtState);
                 break;
+
+            case MATH:
+                this.panes.math.update(gtState);
+                break;
         }
 
         // screen switching
+        switch (this.state.indexActive) {
+            case 0:
+                this.state.activePane = PaneType.GENERAL;
+                break;
+            case 1:
+                this.state.activePane = PaneType.APPEARANCE;
+                break;
+            case 2:
+                this.state.activePane = PaneType.MATH;
+                break;
+            default:
+                this.state.activePane = PaneType.GENERAL;
+        }
 
         // button event handling
         if (this.state.closeButton) {
@@ -249,7 +153,7 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
     }
 
     @Override
-    public void reinit() {
-        this.panes.general.reinit();
+    public void init() {
+        this.panes.general.init();
     }
 }

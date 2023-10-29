@@ -3,6 +3,7 @@ package com.ezntek.beanmaths.dialogs;
 import static com.raylib.Jaylib.*;
 
 import com.ezntek.beanmaths.components.ComponentState;
+import com.ezntek.beanmaths.config.Config;
 import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.util.Colors;
 
@@ -26,8 +27,8 @@ public class AboutDialog extends Dialog {
 
     static Rectangle descBoundRect = new Rectangle(wBoxX + 30, wBoxY + 55 + fontHeight, 692, 531 - fontHeight - 35);
 
-    public AboutDialog(NavigationController nc, int windowWidth, int windowHeight) {
-        super(nc, windowWidth, windowHeight);
+    public AboutDialog(Config cfg, NavigationController nc, int windowWidth, int windowHeight) {
+        super(cfg, nc, windowWidth, windowHeight);
     }
 
     @Override

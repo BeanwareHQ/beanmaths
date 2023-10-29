@@ -1,0 +1,40 @@
+#
+# rgl layout text file (v4.0) - raygui layout file generated using rGuiLayout
+#
+# Number of controls:     26
+#
+# Ref. window:    r <x> <y> <width> <height>
+# Anchor info:    a <id> <name> <posx> <posy> <enabled>
+# Control info:   c <id> <type> <name> <rectangle> <anchor_id> <text>
+#
+r 0 40 -1 -1
+a 001 anchor01 0 0 1
+a 002 anchor02 0 0 1
+a 003 anchor03 0 0 1
+a 004 anchor04 0 0 1
+c 000 0 settingsWindowBox 288 96 752 576 0 Settings
+c 001 21 SettingsList 304 136 112 520 0 General;Apperance;Math
+c 002 23 headingDummy 432 144 584 40 1 Math (placeholder for heading
+c 003 5 closeButton 904 632 120 24 1 Close
+c 004 5 applyButton 776 632 120 24 1 Apply
+c 005 1 basicGroupBox 432 208 592 128 2 Basic
+c 006 1 timesTableGroupBox 432 344 592 96 3 Times Table
+c 007 1 advancedGroupBox 432 448 592 176 4 Advanced
+c 008 7 basicEnableCheckBox 976 216 32 32 2 
+c 009 4 basicEnableLabel 448 216 112 32 2 Enable
+c 010 4 basicImperfectDigitsLabel 448 256 112 32 2 Imperfect Digits
+c 011 7 basicImpDigitsBox 976 256 32 32 2 
+c 012 4 basicMaxNumLabel 448 296 96 32 2 Maximum Number
+c 013 12 basicMaxNumBox 936 296 72 32 2 
+c 014 4 advEnableLabel 448 464 112 32 2 Enable
+c 015 4 ttMaxNumLabel 448 396 112 32 2 Maximum Number
+c 016 12 ttMaxNumBox 936 396 72 32 2 
+c 017 7 ttEnableCheckBox 976 352 32 32 2 
+c 018 4 ttEnableLabel 448 352 112 32 2 Enable
+c 019 7 advEnableCheckBox 976 464 32 32 2 
+c 020 4 advRootsLabel 448 504 136 32 2 Square/Cube Roots
+c 021 7 advRootsCheckBox 976 504 32 32 2 
+c 022 4 advMaxBaseBox 448 544 112 32 2 Maximum Base
+c 023 12 advMaxBaseBox 936 544 72 32 2 
+c 024 4 advMaxPowerBox 448 584 112 32 2 Maximum Power
+c 025 12 advMaxPowerBox 936 584 72 32 2 

@@ -31,7 +31,7 @@ public class NavigationController {
 
         screen.cmpState = ComponentState.ENABLED;
         if (screen instanceof RequiresDeinit)
-            ((RequiresDeinit) screen).reinit();
+            ((RequiresDeinit) screen).init();
 
         this.ll.addLast(screen);
     }
@@ -61,7 +61,7 @@ public class NavigationController {
 
         dialog.cmpState = ComponentState.ENABLED;
         if (dialog instanceof RequiresDeinit)
-            ((RequiresDeinit) dialog).reinit();
+            ((RequiresDeinit) dialog).init();
 
         this.ll.addLast(dialog);
     }

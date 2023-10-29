@@ -1,7 +1,7 @@
 {
     "general": {
-        "defaultNick": "",
-        "defaultServe": ""
+        "defaultNick": "ezntek",
+        "defaultServer": ""
     },
     "appearance": {
         "theme": "Light",

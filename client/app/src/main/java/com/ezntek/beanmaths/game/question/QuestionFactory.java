@@ -30,8 +30,8 @@ public class QuestionFactory {
             // intentional fall-through case
             case ADD:
             case SUB: {
-                int maxValue = this.config.basic.max;
-                if (!this.config.basic.imperfectDigits) {
+                int maxValue = this.config.math.basic.max;
+                if (!this.config.math.basic.imperfectDigits) {
                     // displacement from the next 10s place.
                     int displacement = randomNumRange(1, 9);
 
@@ -45,7 +45,7 @@ public class QuestionFactory {
                 break;
             }
             case MUL: {
-                int maxValue = this.config.timesTable.max;
+                int maxValue = this.config.math.timesTable.max;
 
                 // generate a random number from 2 to maxValue
                 // avoids cases where one multiplies by 1
@@ -55,7 +55,7 @@ public class QuestionFactory {
                 result = new Question(first, second, op);
             }
             case DIV: {
-                int maxValue = this.config.timesTable.max;
+                int maxValue = this.config.math.timesTable.max;
 
                 if (this.timesTable == null) {
                     // constructs a base for the times tables, say
@@ -75,8 +75,8 @@ public class QuestionFactory {
                 result = new Question(dividend, divisor, op);
             }
             case POW: {
-                int first = randomNumRange(1, this.config.advanced.maxBase);
-                int second = randomNumRange(2, this.config.advanced.maxPower); // avoid powers to 1 and 2
+                int first = randomNumRange(1, this.config.math.advanced.maxBase);
+                int second = randomNumRange(2, this.config.math.advanced.maxPower); // avoid powers to 1 and 2
                 result = new Question(first, second, op);
             }
             case ROOT: {

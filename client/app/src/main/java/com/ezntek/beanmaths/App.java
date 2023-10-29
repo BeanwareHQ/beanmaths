@@ -7,6 +7,8 @@ import java.util.LinkedList;
 
 import com.ezntek.beanmaths.components.Background;
 import com.ezntek.beanmaths.components.Component;
+import com.ezntek.beanmaths.config.Config;
+import com.ezntek.beanmaths.config.ConfigLoader;
 import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.screens.*;
 
@@ -16,16 +18,26 @@ public class App {
     static long globTimer = 0;
     static boolean shouldDeinit;
     static NavigationController nc = new NavigationController();
+    static Config config;
     // static Color bgColor = new Jaylib.Color(0x33, 0x33, 0x30, 0xff);
 
-    static TitleScreen titleScreen = new TitleScreen(nc, windowWidth, windowHeight);
+    static TitleScreen titleScreen;
     static Background background = new Background(windowWidth, windowHeight);
 
-    static void init() {
+    static void init() throws Exception {
+        // some preinit stuff
+        ConfigLoader loader = new ConfigLoader("./beanmaths_config.json"); // TODO: finalize config code
+        loader.putDefault(false);
+        config = loader.load();
+        titleScreen = new TitleScreen(config, nc, windowWidth, windowHeight);
+
+        // actual init stuff
         InitWindow(windowWidth, windowHeight, "BeanMaths (java version)");
         SetTargetFPS(60);
         SetExitKey(KEY_NULL);
-        GuiSetStyle(DEFAULT, TEXT_SIZE, 10);
+
+        // now apply the themes and such
+        config.applyAllPossible();
 
         nc.add(titleScreen);
         shouldDeinit = WindowShouldClose();
@@ -72,7 +84,7 @@ public class App {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         init();
         while (!shouldDeinit) {
             refresh();

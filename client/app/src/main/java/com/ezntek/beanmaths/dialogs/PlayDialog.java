@@ -5,6 +5,7 @@ import static com.raylib.Jaylib.*;
 import org.bytedeco.javacpp.BytePointer;
 import com.raylib.Jaylib.Rectangle;
 import com.ezntek.beanmaths.components.ComponentState;
+import com.ezntek.beanmaths.config.Config;
 import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.screens.GameScreen;
 import com.ezntek.beanmaths.screens.Screen;
@@ -55,14 +56,14 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
         boolean shouldClearServerBoxDefault;
         boolean shouldClearLobbyBoxDefault;
 
-        State() {
+        State(Config cfg) {
             this.shouldClearNickBoxDefault = true;
             this.shouldClearServerBoxDefault = true;
             this.shouldClearLobbyBoxDefault = true;
 
-            this.nickBoxBuf = new BytePointer("Joe Jimmy John");
-            this.serverBoxBuf = new BytePointer("10.0.3.273:2257");
-            this.lobbyBoxBuf = new BytePointer("12");
+            this.nickBoxBuf = new BytePointer(cfg.general.defaultNick);
+            this.serverBoxBuf = new BytePointer(cfg.general.defaultServer);
+            this.lobbyBoxBuf = new BytePointer("1");
         }
     }
 
@@ -70,12 +71,15 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
     public ComponentState cmpState = ComponentState.DISABLED;
 
     private boolean shouldClearDefaultText;
-    private State state = new State();
+    private State state = new State(cfg);
 
     static String playSingleplayerText = "Singleplayer doesn't require any additional details. You can just play!";
 
-    public PlayDialog(NavigationController nc, int windowWidth, int windowHeight) {
-        super(nc, windowWidth, windowHeight);
+    public PlayDialog(Config cfg, NavigationController nc, int windowWidth, int windowHeight) {
+        super(cfg, nc, windowWidth, windowHeight);
+
+        // fix config
+        this.cfg = cfg;
 
         // fix the buffer sizes
         this.state.nickBoxBuf.capacity(64);
@@ -164,7 +168,8 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
 
         // button events
         if (this.state.playMultiplayerButton) {
-            Screen gameScreen = new GameScreen(this.nc, this.windowWidth, this.windowHeight, GameMode.MULTIPLAYER);
+            Screen gameScreen = new GameScreen(this.cfg, this.nc, this.windowWidth, this.windowHeight,
+                    GameMode.MULTIPLAYER);
             this.nc.pop();
             this.state.playScreenWindowBoxActive = true; // set it to true for the next use
 
@@ -173,7 +178,8 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
         }
 
         if (this.state.playSingleplayerButton) {
-            Screen gameScreen = new GameScreen(this.nc, this.windowWidth, this.windowHeight, GameMode.SINGLEPLAYER);
+            Screen gameScreen = new GameScreen(this.cfg, this.nc, this.windowWidth, this.windowHeight,
+                    GameMode.SINGLEPLAYER);
             this.nc.pop();
             this.state.playScreenWindowBoxActive = true; // set it to true for the next use
 
@@ -191,7 +197,7 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
     }
 
     @Override
-    public void reinit() {
-        this.state = new State();
+    public void init() {
+        this.state = new State(this.cfg);
     }
 }

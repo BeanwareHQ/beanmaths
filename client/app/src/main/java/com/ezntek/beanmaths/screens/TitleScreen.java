@@ -7,6 +7,7 @@ import com.raylib.Jaylib.Rectangle;
 import static com.raylib.Jaylib.GuiIconText;
 
 import com.ezntek.beanmaths.components.ComponentState;
+import com.ezntek.beanmaths.config.Config;
 import com.ezntek.beanmaths.dialogs.*;
 import com.ezntek.beanmaths.navigation.NavigationController;
 
@@ -33,10 +34,11 @@ public class TitleScreen extends Screen {
     private ButtonStates buttonStates = new ButtonStates();
     int windowWidth, windowHeight;
 
-    public TitleScreen(NavigationController nc, int windowWidth, int windowHeight) {
-        super(nc, windowWidth, windowHeight);
+    public TitleScreen(Config cfg, NavigationController nc, int windowWidth, int windowHeight) {
+        super(cfg, nc, windowWidth, windowHeight);
 
         // for dialogs
+        this.cfg = cfg;
         this.windowWidth = windowWidth;
         this.windowHeight = windowHeight;
     }
@@ -65,21 +67,21 @@ public class TitleScreen extends Screen {
             return;
 
         if (this.buttonStates.playButton) {
-            Dialog dialog = new PlayDialog(this.nc, this.windowWidth, this.windowHeight);
+            Dialog dialog = new PlayDialog(this.cfg, this.nc, this.windowWidth, this.windowHeight);
             this.nc.add(dialog);
 
             return;
         }
 
         if (this.buttonStates.aboutButton) {
-            Dialog dialog = new AboutDialog(this.nc, this.windowWidth, this.windowHeight);
+            Dialog dialog = new AboutDialog(this.cfg, this.nc, this.windowWidth, this.windowHeight);
             this.nc.add(dialog);
 
             return;
         }
 
         if (this.buttonStates.settingsButton) {
-            Dialog dialog = new SettingsDialog(this.nc, this.windowWidth, this.windowHeight);
+            Dialog dialog = new SettingsDialog(this.cfg, this.nc, this.windowWidth, this.windowHeight);
             this.nc.add(dialog);
 
             return;
