@@ -6,6 +6,7 @@ import com.raylib.Jaylib.Rectangle;
 import static com.raylib.Jaylib.*;
 
 import com.ezntek.beanmaths.config.Config;
+import com.ezntek.beanmaths.config.ConfigManager;
 import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.util.RequiresDeinit;
 import com.ezntek.beanmaths.components.settings.*;
@@ -143,8 +144,20 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
             return;
         }
 
-        if (this.state.applyButton)
-            System.out.println("Apply button pressed");
+        if (this.state.applyButton) {
+            this.panes.appearance.apply();
+            this.panes.general.apply();
+            this.panes.math.apply();
+
+            try {
+                ConfigManager cfgm = new ConfigManager();
+                cfgm.save(this.cfg);
+                cfg.applyAllPossible();
+            } catch (Exception exc) {
+                System.err.println("Some error occured when applying the configuration.");
+                return;
+            }
+        }
     }
 
     @Override

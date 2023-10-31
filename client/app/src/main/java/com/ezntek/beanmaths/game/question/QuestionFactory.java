@@ -15,7 +15,7 @@ public class QuestionFactory {
     final static int[] perfectSquares = { 1, 4, 9, 16, 25, 36, 49, 64, 81, 100 };
     final static int[] perfectCubes = { 1, 8, 27, 64, 125, 216, 343, 512, 729, 1000 };
 
-    private Map<Integer, List<Integer>> timesTable;
+    private List<List<Integer>> timesTable;
 
     public QuestionFactory(Config cfg) {
         this.rng = new Random();
@@ -40,8 +40,11 @@ public class QuestionFactory {
 
                     // a "base" of 30 with a displacement of 4 would generate 26 + 4.
                     result = new Question(base - displacement, displacement, op);
+                } else {
+                    int rand1 = randomNumRange(1, maxValue / 2);
+                    int rand2 = randomNumRange(1, maxValue / 2);
+                    result = new Question(rand1, rand2, op);
                 }
-
                 break;
             }
             case MUL: {
@@ -59,14 +62,14 @@ public class QuestionFactory {
 
                 if (this.timesTable == null) {
                     // constructs a base for the times tables, say
-                    // 1, 2, 3 ... 12
-                    this.timesTable = new HashMap<Integer, List<Integer>>();
-                    for (Integer i = 1; i <= maxValue; i++) {
+                    // 2, 3 ... 12
+                    this.timesTable = new ArrayList<List<Integer>>();
+                    for (Integer i = 2; i <= maxValue; i++) {
                         List<Integer> l = new ArrayList<Integer>();
                         for (Integer j = 1; j <= maxValue; j++) {
                             l.add(i * j);
                         }
-                        this.timesTable.put(i, l);
+                        this.timesTable.add(l);
                     }
                 }
 

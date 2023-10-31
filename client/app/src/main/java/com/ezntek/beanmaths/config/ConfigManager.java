@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
-public class ConfigLoader {
+public class ConfigManager {
     static Gson gson = new Gson();
     private String fileContents;
     private String filePath;
@@ -47,7 +47,7 @@ public class ConfigLoader {
             }
             """;
 
-    public ConfigLoader() throws IOException {
+    public ConfigManager() throws IOException {
         String osName = System.getProperty("os.name").toLowerCase();
         String homeDir = System.getenv("HOME");
         File cfgFile;
@@ -59,13 +59,6 @@ public class ConfigLoader {
                 cfgFile.mkdir();
 
             cfgFile = new File(cfgFile, "config.json");
-
-            try {
-                cfgFile.createNewFile();
-            } catch (IOException exc) {
-                System.err.printf("Some IO error occured whilst reading the configuration: {}\n", exc.toString());
-                throw exc;
-            }
         } else if (osName.contains("linux") || osName.contains("bsd")) {
             String xdgConfigHome = System.getenv("XDG_CONFIG_HOME");
 
@@ -83,10 +76,15 @@ public class ConfigLoader {
             cfgFile = new File("./config.json");
         }
 
+        this.filePath = cfgFile.toString();
+
+        if (!cfgFile.exists())
+            this.putDefault(true);
+
         this.fileContents = readFile(cfgFile);
     }
 
-    public ConfigLoader(String path) throws IOException {
+    public ConfigManager(String path) throws IOException {
         this.filePath = path;
         File file = new File(this.filePath);
 
@@ -109,6 +107,18 @@ public class ConfigLoader {
         return result;
     }
 
+    public void save(Config config) throws IOException {
+        String json = gson.toJson(config, config.getClass());
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(this.filePath))) {
+            bw.write(json);
+            bw.flush();
+        } catch (IOException exc) {
+            System.err.printf("Some IO error occured whilst writing the configuration: {}\n", exc.toString());
+            throw exc;
+        }
+    }
+
     public void putDefault(boolean force) throws IOException {
         File file = new File(this.filePath);
 
@@ -119,7 +129,7 @@ public class ConfigLoader {
             bw.write(defaultConfig);
             bw.flush();
         } catch (IOException exc) {
-            System.err.printf("Some IO error occured whilst reading the configuration: {}\n", exc.toString());
+            System.err.printf("Some IO error occured whilst writing the configuration: {}\n", exc.toString());
             throw exc;
         }
     }

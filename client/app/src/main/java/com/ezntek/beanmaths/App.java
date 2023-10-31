@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import com.ezntek.beanmaths.components.Background;
 import com.ezntek.beanmaths.components.Component;
 import com.ezntek.beanmaths.config.Config;
-import com.ezntek.beanmaths.config.ConfigLoader;
+import com.ezntek.beanmaths.config.ConfigManager;
 import com.ezntek.beanmaths.navigation.NavigationController;
 import com.ezntek.beanmaths.screens.*;
 
@@ -26,7 +26,7 @@ public class App {
 
     static void init() throws Exception {
         // some preinit stuff
-        ConfigLoader loader = new ConfigLoader("./beanmaths_config.json"); // TODO: finalize config code
+        ConfigManager loader = new ConfigManager();
         loader.putDefault(false);
         config = loader.load();
         titleScreen = new TitleScreen(config, nc, windowWidth, windowHeight);
@@ -82,6 +82,8 @@ public class App {
         } catch (ConcurrentModificationException exc) {
             return;
         }
+
+        DrawText("WARNING: THIS IS INCOMPLETE SOFTWARE. DO EXPECT BUGS AT THIS STAGE.", 10, windowHeight - 20, 10, RED);
     }
 
     public static void main(String[] args) throws Exception {

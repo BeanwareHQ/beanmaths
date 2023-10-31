@@ -46,6 +46,11 @@ public class GeneralPane extends Component implements RequiresDeinit {
         this.state.nickBoxBuf.capacity(64);
     }
 
+    public void apply() {
+        this.cfg.general.defaultNick = this.state.nickBoxBuf.getString();
+        this.cfg.general.defaultServer = this.state.serverBoxBuf.getString();
+    }
+
     @Override
     public void render() {
         if (!super.shouldRender())

@@ -260,6 +260,21 @@ public class MathPane extends Component implements RequiresDeinit {
         this.init(); // get past navigationcontroller behaviour
     }
 
+    public void apply() {
+        // TODO: fix hacky code
+        this.cfg.math.basic.enable = this.subpanes.basic.state.enableChecked;
+        this.cfg.math.basic.imperfectDigits = this.subpanes.basic.state.imperfectDigitsChecked;
+        this.cfg.math.basic.max = Integer.parseInt(this.subpanes.basic.state.maxNumBoxBuf.getString());
+
+        this.cfg.math.timesTable.enable = this.subpanes.tt.state.enableChecked;
+        this.cfg.math.timesTable.max = Integer.parseInt(this.subpanes.tt.state.maxNumBoxBuf.getString());
+
+        this.cfg.math.advanced.enable = this.subpanes.adv.state.enableChecked;
+        this.cfg.math.advanced.roots = this.subpanes.adv.state.rootsChecked;
+        this.cfg.math.advanced.maxBase = Integer.parseInt(this.subpanes.adv.state.maxBaseBoxBuf.getString());
+        this.cfg.math.advanced.maxPower = Integer.parseInt(this.subpanes.adv.state.maxPowerBoxBuf.getString());
+    }
+
     @Override
     public void render() {
         this.state.indexActive = GuiListView(Rects.modesListView, "Basic;Times Table;Advanced", this.state.scrollIndex,
