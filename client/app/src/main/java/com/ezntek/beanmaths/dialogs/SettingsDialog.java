@@ -109,20 +109,6 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
             return;
         }
 
-        switch (this.state.activePane) {
-            case GENERAL:
-                this.panes.general.update(gtState);
-                break;
-
-            case APPEARANCE:
-                this.panes.appearance.update(gtState);
-                break;
-
-            case MATH:
-                this.panes.math.update(gtState);
-                break;
-        }
-
         // screen switching
         switch (this.state.indexActive) {
             case 0:
@@ -136,6 +122,20 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
                 break;
             default:
                 this.state.activePane = PaneType.GENERAL;
+        }
+
+        switch (this.state.activePane) {
+            case GENERAL:
+                this.panes.general.update(gtState);
+                break;
+
+            case APPEARANCE:
+                this.panes.appearance.update(gtState);
+                break;
+
+            case MATH:
+                this.panes.math.update(gtState);
+                break;
         }
 
         // button event handling

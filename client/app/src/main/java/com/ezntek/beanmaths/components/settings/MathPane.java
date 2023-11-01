@@ -2,8 +2,6 @@ package com.ezntek.beanmaths.components.settings;
 
 import static com.raylib.Jaylib.*;
 
-import java.nio.channels.FileChannel.MapMode;
-
 import org.bytedeco.javacpp.BytePointer;
 
 import com.ezntek.beanmaths.components.Component;
@@ -174,8 +172,6 @@ public class MathPane extends Component implements RequiresDeinit {
             this.cfg = cfg;
             this.state = new State();
             this.init(); // hacky way to get around weird NavigationController behaviour
-            this.state.maxPowerBoxBuf.capacity(4);
-            this.state.maxBaseBoxBuf.capacity(4);
         }
 
         @Override
@@ -197,13 +193,8 @@ public class MathPane extends Component implements RequiresDeinit {
 
         @Override
         public void update(long gtState) {
-            String maxBaseBoxBufString = this.state.maxBaseBoxBuf.getString();
-            String maxPowerBoxBufString = this.state.maxPowerBoxBuf.getString();
-
-            if (maxBaseBoxBufString.length() > 3)
-                this.state.maxBaseBoxBuf.putString(maxBaseBoxBufString.substring(0, 3));
-            if (maxPowerBoxBufString.length() > 3)
-                this.state.maxPowerBoxBuf.putString(maxPowerBoxBufString.substring(0, 3));
+            if (!super.shouldUpdate())
+                return;
         }
 
         @Override
@@ -216,8 +207,11 @@ public class MathPane extends Component implements RequiresDeinit {
         public void init() {
             this.state.enableChecked = this.cfg.math.advanced.enable;
             this.state.rootsChecked = this.cfg.math.advanced.roots;
+
             this.state.maxPowerBoxBuf = new BytePointer(String.valueOf(this.cfg.math.advanced.maxPower));
             this.state.maxBaseBoxBuf = new BytePointer(String.valueOf(this.cfg.math.advanced.maxBase));
+            this.state.maxPowerBoxBuf.capacity(4);
+            this.state.maxBaseBoxBuf.capacity(4);
         }
     }
 

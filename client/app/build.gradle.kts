@@ -51,11 +51,10 @@ dependencies {
 
 // Apply a specific Java toolchain to ease working on different environments.
 java {
+
     toolchain { 
         val toolchainVersion = if (isAppleSilicon) {
             // fix for apple silicon.
-            // gradle from homebrew is bundled with Java 21 only. A more generic
-            // fix could be added later.
             21
         } else {
             17

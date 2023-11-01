@@ -64,6 +64,7 @@ public class AppearancePane extends Component implements RequiresDeinit {
     @Override
     public void init() {
         this.state.defaultTextSizeBoxBuf = new BytePointer(String.valueOf(this.cfg.appearance.textSize));
+        this.state.defaultTextSizeBoxBuf.capacity(4);
     }
 
     @Override
@@ -94,10 +95,5 @@ public class AppearancePane extends Component implements RequiresDeinit {
     public void update(long gtState) {
         if (!super.shouldUpdate())
             return;
-
-        String defaultTextSizeBufString = this.state.defaultTextSizeBoxBuf.getString();
-        System.err.println(defaultTextSizeBufString);
-        if (defaultTextSizeBufString.length() > 4)
-            this.state.defaultTextSizeBoxBuf.putString(defaultTextSizeBufString.substring(0, 4));
     }
 }

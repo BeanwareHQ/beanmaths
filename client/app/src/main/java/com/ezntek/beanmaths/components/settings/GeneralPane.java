@@ -71,16 +71,6 @@ public class GeneralPane extends Component implements RequiresDeinit {
     public void update(long gtState) {
         if (!super.shouldUpdate())
             return;
-
-        // truncate strings to avoid a buffer overflow
-        String nickBoxBufString = this.state.nickBoxBuf.getString();
-        String serverBoxBufString = this.state.serverBoxBuf.getString();
-
-        if (nickBoxBufString.length() > 64)
-            this.state.nickBoxBuf.putString(nickBoxBufString.substring(0, 63));
-
-        if (serverBoxBufString.length() > 64)
-            this.state.serverBoxBuf.putString(serverBoxBufString.substring(0, 63));
     }
 
     @Override
@@ -93,5 +83,8 @@ public class GeneralPane extends Component implements RequiresDeinit {
     public void init() {
         this.state.nickBoxBuf = new BytePointer(this.cfg.general.defaultNick);
         this.state.serverBoxBuf = new BytePointer(this.cfg.general.defaultServer);
+
+        this.state.nickBoxBuf.capacity(64);
+        this.state.serverBoxBuf.capacity(64);
     }
 }

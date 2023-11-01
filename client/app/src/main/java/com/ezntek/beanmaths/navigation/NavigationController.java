@@ -56,6 +56,7 @@ public class NavigationController {
             // to be displayed, but not updated.
             //
             // Makes usage a bit more natural.
+            dialog.darken = true;
             prev.cmpState = ComponentState.NOUPDATE;
         }
 

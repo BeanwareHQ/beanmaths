@@ -17,8 +17,6 @@ public abstract class Dialog extends Screen {
     public Dialog(Config cfg, NavigationController nc, int windowWidth, int windowHeight) {
         super(cfg, nc, windowWidth, windowHeight);
 
-        this.cfg = cfg;
-        this.darken = true;
         this.darkeningRect = new Rectangle(0, 0, windowWidth, windowHeight);
         this.darkeningColor = new Jaylib.Color(80, 80, 80, 80);
     }

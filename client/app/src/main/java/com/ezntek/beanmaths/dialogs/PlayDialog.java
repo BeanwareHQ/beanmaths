@@ -4,6 +4,7 @@ import static com.raylib.Jaylib.*;
 
 import org.bytedeco.javacpp.BytePointer;
 import com.raylib.Jaylib.Rectangle;
+
 import com.ezntek.beanmaths.components.ComponentState;
 import com.ezntek.beanmaths.config.Config;
 import com.ezntek.beanmaths.navigation.NavigationController;
@@ -60,10 +61,6 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
             this.shouldClearNickBoxDefault = true;
             this.shouldClearServerBoxDefault = true;
             this.shouldClearLobbyBoxDefault = true;
-
-            this.nickBoxBuf = new BytePointer(cfg.general.defaultNick);
-            this.serverBoxBuf = new BytePointer(cfg.general.defaultServer);
-            this.lobbyBoxBuf = new BytePointer("1");
         }
     }
 
@@ -81,10 +78,6 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
         // fix config
         this.cfg = cfg;
 
-        // fix the buffer sizes
-        this.state.nickBoxBuf.capacity(64);
-        this.state.lobbyBoxBuf.capacity(64);
-        this.state.serverBoxBuf.capacity(64);
     }
 
     @Override
@@ -198,6 +191,13 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
 
     @Override
     public void init() {
-        this.state = new State(this.cfg);
+        this.state.nickBoxBuf = new BytePointer(cfg.general.defaultNick);
+        this.state.serverBoxBuf = new BytePointer(cfg.general.defaultServer);
+        this.state.lobbyBoxBuf = new BytePointer("1");
+
+        // fix the buffer sizes
+        this.state.nickBoxBuf.capacity(64);
+        this.state.lobbyBoxBuf.capacity(64);
+        this.state.serverBoxBuf.capacity(64);
     }
 }
