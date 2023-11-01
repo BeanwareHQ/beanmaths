@@ -43,7 +43,6 @@ public class MathPane extends Component implements RequiresDeinit {
             this.cfg = cfg;
             this.state = new State();
             this.init(); // initializes bytepointers
-            this.state.maxNumBoxBuf.capacity(4);
         }
 
         @Override
@@ -106,7 +105,6 @@ public class MathPane extends Component implements RequiresDeinit {
             this.cfg = cfg;
             this.state = new State();
             this.init();
-            this.state.maxNumBoxBuf.capacity(4);
         }
 
         @Override
@@ -210,8 +208,6 @@ public class MathPane extends Component implements RequiresDeinit {
 
             this.state.maxPowerBoxBuf = new BytePointer(String.valueOf(this.cfg.math.advanced.maxPower));
             this.state.maxBaseBoxBuf = new BytePointer(String.valueOf(this.cfg.math.advanced.maxBase));
-            this.state.maxPowerBoxBuf.capacity(4);
-            this.state.maxBaseBoxBuf.capacity(4);
         }
     }
 

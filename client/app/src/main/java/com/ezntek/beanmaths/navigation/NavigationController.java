@@ -61,6 +61,7 @@ public class NavigationController {
         }
 
         dialog.cmpState = ComponentState.ENABLED;
+
         if (dialog instanceof RequiresDeinit)
             ((RequiresDeinit) dialog).init();
 
@@ -74,6 +75,7 @@ public class NavigationController {
     public Screen pop() {
         this.ll.getLast().cmpState = ComponentState.DISABLED;
         Screen res = (Screen) this.ll.removeLast(); // Could be a `Dialog`
+
         if (res instanceof RequiresDeinit)
             ((RequiresDeinit) res).deinit();
 

@@ -2,12 +2,13 @@ package com.ezntek.beanmaths.screens;
 
 import static com.raylib.Jaylib.*;
 
+import com.ezntek.beanmaths.util.RequiresDeinit;
 import com.ezntek.beanmaths.components.ComponentState;
 import com.ezntek.beanmaths.config.Config;
 import com.ezntek.beanmaths.game.Game;
 import com.ezntek.beanmaths.navigation.NavigationController;
 
-public class GameScreen extends Screen {
+public class GameScreen extends Screen implements RequiresDeinit {
     public enum GameMode {
         SINGLEPLAYER,
         MULTIPLAYER,
@@ -19,7 +20,7 @@ public class GameScreen extends Screen {
     public GameScreen(Config cfg, NavigationController nc, int windowWidth, int windowHeight, GameMode gameMode) {
         super(cfg, nc, windowWidth, windowHeight);
 
-        this.game = new Game(gameMode);
+        this.game = new Game(gameMode, windowWidth, windowHeight);
         // TODO: implement multiplayer (😭)
     }
 
@@ -42,5 +43,15 @@ public class GameScreen extends Screen {
         }
 
         this.game.update(gtState);
+    }
+
+    @Override
+    public void init() {
+        this.game.init();
+    }
+
+    @Override
+    public void deinit() {
+        this.game.deinit();
     }
 }

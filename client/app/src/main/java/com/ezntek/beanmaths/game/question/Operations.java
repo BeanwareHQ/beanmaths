@@ -19,7 +19,7 @@ public class Operations {
             case MUL:
                 return "×";
             case DIV:
-                return "/";
+                return "÷";
             case POW:
                 return "^";
             case ROOT:

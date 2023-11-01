@@ -10,6 +10,7 @@ import com.ezntek.beanmaths.components.Component;
 import com.ezntek.beanmaths.config.Config;
 import com.ezntek.beanmaths.config.ConfigManager;
 import com.ezntek.beanmaths.navigation.NavigationController;
+import com.ezntek.beanmaths.util.RequiresDeinit;
 import com.ezntek.beanmaths.screens.*;
 
 public class App {
@@ -20,6 +21,8 @@ public class App {
     static NavigationController nc = new NavigationController();
     static Config config;
     // static Color bgColor = new Jaylib.Color(0x33, 0x33, 0x30, 0xff);
+
+    static Font font;
 
     static TitleScreen titleScreen;
     static Background background = new Background(windowWidth, windowHeight);
@@ -44,6 +47,15 @@ public class App {
     }
 
     static void deinit() {
+        try {
+            LinkedList<Component> components = (LinkedList<Component>) nc.getComponents().clone();
+            components.forEach((cmp) -> {
+                if (cmp instanceof RequiresDeinit)
+                    ((RequiresDeinit) cmp).deinit();
+            });
+        } catch (ConcurrentModificationException exc) {
+            return;
+        }
         CloseWindow();
     }
 

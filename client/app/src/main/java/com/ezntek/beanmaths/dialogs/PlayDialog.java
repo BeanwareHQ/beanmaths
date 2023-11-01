@@ -2,6 +2,8 @@ package com.ezntek.beanmaths.dialogs;
 
 import static com.raylib.Jaylib.*;
 
+import java.lang.module.ModuleDescriptor.Requires;
+
 import org.bytedeco.javacpp.BytePointer;
 import com.raylib.Jaylib.Rectangle;
 
@@ -70,7 +72,7 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
     private boolean shouldClearDefaultText;
     private State state = new State(cfg);
 
-    static String playSingleplayerText = "Singleplayer doesn't require any additional details. You can just play!";
+    static String playSingleplayerText = "Singleplayer doesn't require any additional details.";
 
     public PlayDialog(Config cfg, NavigationController nc, int windowWidth, int windowHeight) {
         super(cfg, nc, windowWidth, windowHeight);
@@ -163,6 +165,7 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
         if (this.state.playMultiplayerButton) {
             Screen gameScreen = new GameScreen(this.cfg, this.nc, this.windowWidth, this.windowHeight,
                     GameMode.MULTIPLAYER);
+            this.deinit();
             this.nc.pop();
             this.state.playScreenWindowBoxActive = true; // set it to true for the next use
 

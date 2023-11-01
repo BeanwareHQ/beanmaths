@@ -1,9 +1,10 @@
 package com.ezntek.beanmaths.game.question;
 
 import com.ezntek.beanmaths.game.question.Operations.Operation;
-import com.ezntek.beanmaths.components.Component;
 
-public class Question extends Component {
+import static com.raylib.Jaylib.*;
+
+public class Question {
     Operation op;
     int first;
     int second;
@@ -34,15 +35,16 @@ public class Question extends Component {
         }
     }
 
-    @Override
-    public void render() {
-        if (!super.shouldRender())
-            return;
+    public void render(Texture symbolTexture, int screenWidth, int screenHeight) {
+        int frameWidth = 90;
+        int frameHeight = 120;
+
+        Rectangle sourceRect = new Rectangle(0, 0, frameWidth, frameHeight);
+        Rectangle destRect = new Rectangle(screenWidth / 2, screenHeight / 2, frameWidth, frameHeight);
+        DrawTexturePro(symbolTexture, sourceRect, destRect, new Vector2(0, 0), 0, WHITE);
     }
 
-    @Override
     public void update(long gtState) {
-        if (!super.shouldUpdate())
-            return;
+
     }
 }
