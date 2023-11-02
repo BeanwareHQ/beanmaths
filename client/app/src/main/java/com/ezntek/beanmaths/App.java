@@ -64,7 +64,7 @@ public class App {
 
         background.update(globTimer);
         try {
-            // avoid a `ConcurrentModificationException` by cloning the data first
+            // avoid a `ConcurrentModificationException` by cloning the array ptr first
             LinkedList<Component> components = (LinkedList<Component>) nc.getComponents().clone();
             components.forEach((cmp) -> {
                 cmp.update(globTimer);

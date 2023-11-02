@@ -38,6 +38,7 @@ public class GameScreen extends Screen implements RequiresDeinit {
             return;
 
         if (IsKeyPressed(KEY_ESCAPE)) {
+            this.deinit();
             nc.pop();
             return;
         }

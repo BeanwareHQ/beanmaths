@@ -79,7 +79,8 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
 
         // fix config
         this.cfg = cfg;
-
+        // just in case
+        this.init();
     }
 
     @Override
@@ -131,19 +132,23 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
             return;
         }
 
-        // chop strings to make sure that buffer overflows don't happen
-        String lobbyBoxBufString = this.state.lobbyBoxBuf.getString();
-        String serverBoxBufString = this.state.serverBoxBuf.getString();
-        String nickBoxBufString = this.state.nickBoxBuf.getString();
+        try {
+            // chop strings to make sure that buffer overflows don't happen
+            String lobbyBoxBufString = this.state.lobbyBoxBuf.getString();
+            String serverBoxBufString = this.state.serverBoxBuf.getString();
+            String nickBoxBufString = this.state.nickBoxBuf.getString();
 
-        if (lobbyBoxBufString.length() > 63)
-            this.state.lobbyBoxBuf.putString(lobbyBoxBufString.substring(0, 63));
+            if (lobbyBoxBufString.length() > 63)
+                this.state.lobbyBoxBuf.putString(lobbyBoxBufString.substring(0, 63));
 
-        if (serverBoxBufString.length() > 63)
-            this.state.serverBoxBuf.putString(serverBoxBufString.substring(0, 63));
+            if (serverBoxBufString.length() > 63)
+                this.state.serverBoxBuf.putString(serverBoxBufString.substring(0, 63));
 
-        if (nickBoxBufString.length() > 63)
-            this.state.nickBoxBuf.putString(nickBoxBufString.substring(0, 63));
+            if (nickBoxBufString.length() > 63)
+                this.state.nickBoxBuf.putString(nickBoxBufString.substring(0, 63));
+        } catch (NullPointerException exc) {
+            this.init(); // FIXME: stabilize init behvaiour
+        }
 
         // lobby box text clearing
         if (this.state.shouldClearLobbyBoxDefault && this.state.lobbyBoxEditMode) {
@@ -165,8 +170,8 @@ public class PlayDialog extends Dialog implements RequiresDeinit {
         if (this.state.playMultiplayerButton) {
             Screen gameScreen = new GameScreen(this.cfg, this.nc, this.windowWidth, this.windowHeight,
                     GameMode.MULTIPLAYER);
-            this.deinit();
             this.nc.pop();
+            this.deinit();
             this.state.playScreenWindowBoxActive = true; // set it to true for the next use
 
             this.nc.add(gameScreen);

@@ -104,7 +104,7 @@ public class MathPane extends Component implements RequiresDeinit {
 
             this.cfg = cfg;
             this.state = new State();
-            this.init();
+            // this.init();
         }
 
         @Override

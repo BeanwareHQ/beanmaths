@@ -48,7 +48,7 @@ public class AppearancePane extends Component implements RequiresDeinit {
 
         this.cfg = cfg;
         this.state = new State(this.cfg);
-        this.init();
+        // this.init();
     }
 
     public void apply() {

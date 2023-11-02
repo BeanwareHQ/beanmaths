@@ -94,7 +94,7 @@ public class TitleScreen extends Screen {
                 // absence of elements will be detected
                 // on the same cycle after the root screen
                 // gets removed, so propagating and recatching
-                // is unnecessary.
+                // elsewhere is unnecessary.
                 return;
             }
         }

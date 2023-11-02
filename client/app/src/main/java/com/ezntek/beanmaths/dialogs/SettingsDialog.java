@@ -163,10 +163,14 @@ public class SettingsDialog extends Dialog implements RequiresDeinit {
     @Override
     public void deinit() {
         this.panes.general.deinit();
+        this.panes.appearance.deinit();
+        this.panes.math.deinit();
     }
 
     @Override
     public void init() {
         this.panes.general.init();
+        this.panes.appearance.init();
+        this.panes.math.init();
     }
 }

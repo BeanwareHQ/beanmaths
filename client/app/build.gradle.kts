@@ -43,7 +43,6 @@ dependencies {
     } else {
         implementation("uk.co.electronstudio.jaylib:jaylib:4.2.+")
     }
-    
 
     // JSON
     implementation("com.google.code.gson:gson:2.10.1")
@@ -53,12 +52,7 @@ dependencies {
 java {
 
     toolchain { 
-        val toolchainVersion = if (isAppleSilicon) {
-            // fix for apple silicon.
-            21
-        } else {
-            17
-        };
+        val toolchainVersion = 17;
 
         languageVersion.set(JavaLanguageVersion.of(toolchainVersion)) 
     }
