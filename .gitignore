@@ -1,7 +1,3 @@
-/*.c
-/.clangd
-server/zig-*
-client/.gradle
-client/build
-**/*eclipse*
-.vscode
+# Added by cargo
+
+/target
