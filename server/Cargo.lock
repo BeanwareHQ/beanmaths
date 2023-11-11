@@ -3,9 +3,5 @@
 version = 3
 
 [[package]]
-name = "beanmaths-client"
-version = "0.1.0"
-
-[[package]]
-name = "beanmaths-server"
+name = "server"
 version = "0.1.0"
