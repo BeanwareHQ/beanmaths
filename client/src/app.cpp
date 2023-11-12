@@ -1,5 +1,6 @@
 #include "app.hpp"
 #include "Color.hpp"
+#include <iostream>
 
 void App::run() {
     while (!this->shouldDeinit) {
@@ -10,10 +11,20 @@ void App::run() {
     }
 }
 
-void App::render() { window.ClearBackground(raylib::Color::RayWhite()); }
+void App::render() {
+    window.ClearBackground(raylib::Color::RayWhite());
+
+    for (auto& screen : this->nc.getScreens()) {
+        screen.render();
+    }
+}
 
 void App::update() {
     this->gtState++;
+
+    for (auto& screen : this->nc.getScreens()) {
+        screen.update(this->gtState);
+    }
 
     this->shouldDeinit |= this->window.ShouldClose();
 }

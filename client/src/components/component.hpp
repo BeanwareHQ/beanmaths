@@ -11,15 +11,15 @@ enum ComponentState {
 
 class Component {
 public:
-    ComponentState componentState;
+    ComponentState componentState = ComponentState::ENABLED;
 
-    virtual ~Component();
+    virtual ~Component(){};
 
     bool shouldRender() const;
     bool shouldUpdate() const;
 
-    virtual void render();
-    virtual void update(long gtState);
+    virtual void render(){};
+    virtual void update(long gtState){};
 };
 
 } // namespace components

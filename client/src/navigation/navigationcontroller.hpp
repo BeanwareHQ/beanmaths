@@ -10,15 +10,15 @@ namespace navigation {
 class NavigationController {
 public:
     NavigationController() {}
-    NavigationController(screens::Screen initialScreen) {
-        this->add(initialScreen);
+    NavigationController(screens::Screen&& initialScreen) {
+        this->add(std::move(initialScreen));
     }
 
     screens::Screen back() const;
     bool empty() const;
 
-    void add(screens::Screen screen);
-    void add(dialogs::Dialog dialog);
+    void add(screens::Screen&& screen);
+    void add(dialogs::Dialog&& dialog);
     screens::Screen pop();
     auto getScreens() -> std::vector<screens::Screen>&;
 

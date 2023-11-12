@@ -8,6 +8,7 @@ namespace screens {
 void TitleScreen::render() {
     if (!this->shouldRender())
         return;
+    std::cout << "arst" << std::endl;
     this->state.aboutButton = GuiButton(
         this->aboutButton, GuiIconText(GuiIconName::ICON_INFO, "About"));
     this->state.playButton = GuiButton(

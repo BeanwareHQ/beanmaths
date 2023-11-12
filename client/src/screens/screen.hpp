@@ -8,8 +8,11 @@ namespace screens {
 
 class Screen : public components::Component {
 public:
-    Screen(raylib::Window& window) : window(window){};
-    virtual ~Screen();
+    Screen(raylib::Window& window) : Component(), window(window){};
+    ~Screen(){};
+
+    // virtual void render();
+    // virtual void refresh(long gtState);
 
 protected:
     raylib::Window& window;
@@ -41,6 +44,8 @@ public:
     TitleScreen(raylib::Window& window) : Screen(window) {
         this->state = TitleScreenState{false, false, false, false};
     }
+
+    ~TitleScreen() override {}
 
     void render() override;
     void update(long gtState) override;
