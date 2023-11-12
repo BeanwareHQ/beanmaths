@@ -13,6 +13,8 @@ class Component {
 public:
     ComponentState componentState;
 
+    virtual ~Component();
+
     bool shouldRender() const;
     bool shouldUpdate() const;
 

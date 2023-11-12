@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Rectangle.hpp"
-#include "Window.hpp"
+#include "raylib-cpp/include/Rectangle.hpp"
+#include "raylib-cpp/include/Window.hpp"
 #include "src/components/component.hpp"
 
 namespace screens {
@@ -9,6 +9,7 @@ namespace screens {
 class Screen : public components::Component {
 public:
     Screen(raylib::Window& window) : window(window){};
+    virtual ~Screen();
 
 protected:
     raylib::Window& window;

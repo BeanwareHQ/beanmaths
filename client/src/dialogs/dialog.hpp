@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Color.hpp"
-#include "Rectangle.hpp"
-#include "Vector4.hpp"
+#include "raylib-cpp/include/Color.hpp"
+#include "raylib-cpp/include/Rectangle.hpp"
+#include "raylib-cpp/include/Vector4.hpp"
 
-#include "src/screens/screen.hpp"
+#include "../screens/screen.hpp"
 
 namespace dialogs {
 
@@ -20,6 +20,8 @@ public:
         : screens::Screen(window),
           darkeningRect(0, 0, window.GetWidth(), window.GetHeight()),
           darkeningColor(raylib::Vector4(80, 80, 80, 80)) {}
+
+    virtual ~Dialog();
 
     void render() override;
 };
