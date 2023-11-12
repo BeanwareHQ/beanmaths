@@ -1,3 +1,6 @@
-[submodule "client/raylib-cpp"]
-	path = client/raylib-cpp
+[submodule "client/thirdparty/raylib-cpp"]
+	path = client/thirdparty/raylib-cpp
 	url = https://github.com/RobLoach/raylib-cpp
+[submodule "client/thirdparty/raygui"]
+	path = client/thirdparty/raygui
+	url = https://github.com/raysan5/raygui

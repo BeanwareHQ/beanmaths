@@ -1,6 +1,6 @@
 #include "app.hpp"
 
 int main(void) {
-    auto app = App();
+    App app;
     app.run();
 }

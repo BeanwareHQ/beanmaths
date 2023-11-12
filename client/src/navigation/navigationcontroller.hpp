@@ -3,13 +3,13 @@
 namespace navigation {
 
 class NavigationController {
-  public:
+public:
     NavigationController() {
         // TODO: implement
     }
     void foo();
 
-  private:
+private:
 };
 
 } // namespace navigation

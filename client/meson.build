@@ -7,7 +7,7 @@ project('beanmaths-client', 'cpp',
   })
 
 # raylib
-inc_dirs = include_directories('./raylib-cpp/include')
+inc_dirs = include_directories('./thirdparty')
 
 sources = [
   # src/

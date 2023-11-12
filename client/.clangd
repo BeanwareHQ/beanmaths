@@ -1,5 +1,5 @@
 CompileFlags:
   Add:
     #    - '-I./raylib-cpp/include'
-    - '-I./src/'
+    - '-I./thirdparty'
     - '-std=c++20'

@@ -3,13 +3,13 @@
 #include "Window.hpp"
 
 class App {
-  public:
+public:
     App() : window(1360, 768, "BeanMaths SeePlusPlus") { this->gtState = 0; };
     ~App() { this->window.Close(); };
 
     void run();
 
-  private:
+private:
     raylib::Window window;
     long gtState;
     bool shouldDeinit;

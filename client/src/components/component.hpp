@@ -10,11 +10,11 @@ enum ComponentState {
 };
 
 class Component {
-  public:
+public:
     ComponentState componentState;
 
-    bool shouldRender();
-    bool shouldUpdate();
+    bool shouldRender() const;
+    bool shouldUpdate() const;
 
     virtual void render();
     virtual void update(long gtState);
