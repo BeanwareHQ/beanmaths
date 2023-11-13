@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "raygui.h"
 #include "screen.hpp"
 
@@ -11,33 +9,24 @@ void TitleScreen::render() {
 
     GuiDummyRec(this->dummyRec, "BeanMaths Logo Placeholder");
 
-    this->state.aboutButton = GuiButton(
-        this->aboutButton, GuiIconText(GuiIconName::ICON_INFO, "About"));
-    this->state.playButton = GuiButton(
-        this->playButton, GuiIconText(GuiIconName::ICON_PLAYER_PLAY, "Play"));
-    this->state.settingsButton = GuiButton(
-        this->settingsButton, GuiIconText(GuiIconName::ICON_GEAR, "Settings"));
-    this->state.exitButton = GuiButton(
-        this->exitButton, GuiIconText(GuiIconName::ICON_EXIT, "Quit"));
+    this->playButton.render();
+    this->settingsButton.render();
+    this->exitButton.render();
+    this->aboutButton.render();
 }
 
-void TitleScreen::update(long /* gtState */) {
+void TitleScreen::update(long gtState) {
     if (!this->shouldUpdate())
         return;
 
-    if (this->state.aboutButton)
-        std::cout << "About button clicked" << std::endl;
-
-    if (this->state.playButton)
-        std::cout << "Play button clicked" << std::endl;
-
-    if (this->state.settingsButton)
-        std::cout << "Settings button clicked" << std::endl;
-
-    if (this->state.exitButton) {
-        this->nc.pop();
+    if (this->playButton.update(gtState))
         return;
-    }
+    if (this->settingsButton.update(gtState))
+        return;
+    if (this->exitButton.update(gtState))
+        return;
+    if (this->aboutButton.update(gtState))
+        return;
 }
 
 } // namespace screens

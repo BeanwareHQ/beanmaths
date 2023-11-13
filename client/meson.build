@@ -35,6 +35,9 @@ sources = [
   # src/navigation
   'src/navigation/navigationcontroller.cpp',
 
+  # src/rayguiex
+  'src/rayguiex/button.cpp',
+
   # src/screens
   'src/screens/screen.cpp',
   'src/screens/titlescreen.cpp',
