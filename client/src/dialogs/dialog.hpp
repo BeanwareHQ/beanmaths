@@ -4,7 +4,8 @@
 #include "raylib-cpp/include/Rectangle.hpp"
 #include "raylib-cpp/include/Vector4.hpp"
 
-#include "../screens/screen.hpp"
+#include "src/navigation/navigationcontroller.hpp"
+#include "src/screens/screen.hpp"
 
 namespace dialogs {
 
@@ -15,9 +16,8 @@ protected:
 
 public:
     bool darken;
-
-    Dialog(raylib::Window& window)
-        : screens::Screen(window),
+    Dialog(raylib::Window& window, navigation::NavigationController& nc)
+        : screens::Screen(window, nc),
           darkeningRect(0, 0, window.GetWidth(), window.GetHeight()),
           darkeningColor(raylib::Vector4(80, 80, 80, 80)) {}
 

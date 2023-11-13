@@ -3,8 +3,14 @@
 #include <memory>
 #include <vector>
 
-#include "src/dialogs/dialog.hpp"
-#include "src/screens/screen.hpp"
+// avoids namespace clashes
+namespace screens {
+class Screen;
+}
+
+namespace dialogs {
+class Dialog;
+}
 
 namespace navigation {
 

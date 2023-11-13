@@ -2,19 +2,23 @@
 
 #include "raylib-cpp/include/Rectangle.hpp"
 #include "raylib-cpp/include/Window.hpp"
+
 #include "src/components/component.hpp"
+#include "src/navigation/navigationcontroller.hpp"
 
 namespace screens {
 
 class Screen : public components::Component {
 public:
-    Screen(raylib::Window& window) : Component(), window(window){};
+    Screen(raylib::Window& window, navigation::NavigationController& nc)
+        : Component(), window(window), nc(nc){};
 
     // virtual void render();
     // virtual void refresh(long gtState);
 
 protected:
     raylib::Window& window;
+    navigation::NavigationController& nc;
 };
 
 // class TitleScreen
@@ -40,16 +44,18 @@ public:
     components::ComponentState componentState =
         components::ComponentState::ENABLED;
 
-    TitleScreen(raylib::Window& window) : Screen(window) {
+    TitleScreen(raylib::Window& window, navigation::NavigationController& nc)
+        : Screen(window, nc) {
         this->state = TitleScreenState{false, false, false, false};
     }
 
-    ~TitleScreen() override {}
+    ~TitleScreen() = default;
 
     void render() override;
     void update(long gtState) override;
 };
-
 // class TitleScreen
+
+// class
 
 } // namespace screens

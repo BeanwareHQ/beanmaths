@@ -1,6 +1,6 @@
+#include "raylib-cpp/include/Color.hpp"
+
 #include "app.hpp"
-#include "Color.hpp"
-#include <iostream>
 
 void App::run() {
     while (!this->shouldDeinit) {
@@ -21,6 +21,11 @@ void App::render() {
 
 void App::update() {
     this->gtState++;
+
+    if (this->nc.empty()) {
+        shouldDeinit = true;
+        return; // exit and allow while loop to break
+    }
 
     for (auto& screen : this->nc.getScreens()) {
         screen->update(this->gtState);

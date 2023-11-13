@@ -1,17 +1,19 @@
 #pragma once
 
+#include <memory>
+
 #include "raylib-cpp/include/Window.hpp"
 #include "src/navigation/navigationcontroller.hpp"
-#include <memory>
+#include "src/screens/screen.hpp"
 
 class App {
 public:
     App() : window(1360, 768, "BeanMaths SeePlusPlus") {
         this->gtState = 0;
-        auto titleScreen = std::make_unique<screens::TitleScreen>(
-            screens::TitleScreen(this->window));
+        screens::TitleScreen titleScreen(this->window, this->nc);
 
-        this->nc = navigation::NavigationController(std::move(titleScreen));
+        this->nc = navigation::NavigationController(
+            std::make_unique<screens::TitleScreen>(titleScreen));
     };
     ~App() { this->window.Close(); };
 

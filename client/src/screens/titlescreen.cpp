@@ -28,14 +28,16 @@ void TitleScreen::update(long /* gtState */) {
     if (this->state.aboutButton)
         std::cout << "About button clicked" << std::endl;
 
-    if (this->state.exitButton)
-        std::cout << "Exit button clicked" << std::endl;
-
     if (this->state.playButton)
         std::cout << "Play button clicked" << std::endl;
 
     if (this->state.settingsButton)
         std::cout << "Settings button clicked" << std::endl;
+
+    if (this->state.exitButton) {
+        this->nc.pop();
+        return;
+    }
 }
 
 } // namespace screens
