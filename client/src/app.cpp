@@ -15,7 +15,7 @@ void App::render() {
     window.ClearBackground(raylib::Color::RayWhite());
 
     for (auto& screen : this->nc.getScreens()) {
-        screen.render();
+        screen->render();
     }
 }
 
@@ -23,7 +23,7 @@ void App::update() {
     this->gtState++;
 
     for (auto& screen : this->nc.getScreens()) {
-        screen.update(this->gtState);
+        screen->update(this->gtState);
     }
 
     this->shouldDeinit |= this->window.ShouldClose();

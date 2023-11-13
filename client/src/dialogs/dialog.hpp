@@ -21,8 +21,6 @@ public:
           darkeningRect(0, 0, window.GetWidth(), window.GetHeight()),
           darkeningColor(raylib::Vector4(80, 80, 80, 80)) {}
 
-    ~Dialog(){};
-
     void render() override;
 };
 

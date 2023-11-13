@@ -13,13 +13,13 @@ class Component {
 public:
     ComponentState componentState = ComponentState::ENABLED;
 
-    virtual ~Component(){};
+    virtual ~Component() = default;
 
     bool shouldRender() const;
     bool shouldUpdate() const;
 
-    virtual void render(){};
-    virtual void update(long gtState){};
+    virtual void render() = 0;
+    virtual void update(long gtState) = 0;
 };
 
 } // namespace components

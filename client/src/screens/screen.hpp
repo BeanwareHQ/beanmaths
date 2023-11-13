@@ -9,7 +9,6 @@ namespace screens {
 class Screen : public components::Component {
 public:
     Screen(raylib::Window& window) : Component(), window(window){};
-    ~Screen(){};
 
     // virtual void render();
     // virtual void refresh(long gtState);

@@ -8,7 +8,9 @@ namespace screens {
 void TitleScreen::render() {
     if (!this->shouldRender())
         return;
-    std::cout << "arst" << std::endl;
+
+    GuiDummyRec(this->dummyRec, "BeanMaths Logo Placeholder");
+
     this->state.aboutButton = GuiButton(
         this->aboutButton, GuiIconText(GuiIconName::ICON_INFO, "About"));
     this->state.playButton = GuiButton(
@@ -16,10 +18,10 @@ void TitleScreen::render() {
     this->state.settingsButton = GuiButton(
         this->settingsButton, GuiIconText(GuiIconName::ICON_GEAR, "Settings"));
     this->state.exitButton = GuiButton(
-        this->playButton, GuiIconText(GuiIconName::ICON_EXIT, "Quit"));
+        this->exitButton, GuiIconText(GuiIconName::ICON_EXIT, "Quit"));
 }
 
-void TitleScreen::update(long gtState) {
+void TitleScreen::update(long /* gtState */) {
     if (!this->shouldUpdate())
         return;
 
