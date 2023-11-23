@@ -4,7 +4,7 @@ A mental maths practice app, but it's a multiplayer quiz. And very scuffed too!
 
 ## Info
 
-This project was made for my school's Computer Science Course. A branch will be created in the future as an archive for the version that was put up for submission. PRs and MRs will not be accepted before the submission is made.
+This project was originally made for my school's Computer Science Course. I didn't make it in time for submission, so this project is now just a fun project to work on.
 
 The server is written in Rust, and the client in C++.
 
